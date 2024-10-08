@@ -1,0 +1,50 @@
+trigger:
+  branches:
+    include:
+      - main  # Jalankan pipeline ketika ada perubahan di branch main
+  
+  paths:
+    include:
+    - poc
+
+pool: agentpool  # Menggunakan agen Ubuntu yang dikelola oleh Microsoft
+
+variables:
+  dockerRegistryServiceConnection: 'devops-poc'  # Ganti dengan service connection ke Docker Hub
+  imageRepository: 'nuek21/fe'  # Ganti dengan nama repository Docker Hub kamu
+  tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
+  containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
+
+steps:
+  # Langkah 1: Checkout repository
+  - checkout: self
+
+  # Langkah 2: Install Node.js dependencies
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '14.x'
+    displayName: 'Install Node.js'
+
+  - script: |
+      npm install
+    displayName: 'Install dependencies'
+
+  # Langkah 3: Build Docker image dan push ke Docker Hub
+  - task: Docker@2
+    inputs:
+      containerRegistry: '$(dockerRegistryServiceConnection)'
+      repository: '$(imageRepository)'
+      command: 'buildAndPush'
+      Dockerfile: 'literature-frontend-main/Dockerfile'
+      tags: |
+        latest
+        $(tag)
+
+  # Langkah 4: Jalankan container dengan port 3000
+  - script: |
+      docker run -d -p 3000:3000 --name $(containerName) $(imageRepository):$(tag)
+    displayName: 'Run Docker Container on Port 3000'
+
+  # Langkah 5: Publish build artifacts (opsional)
+  - publish: $(Build.ArtifactStagingDirectory)
+    artifact: drop
