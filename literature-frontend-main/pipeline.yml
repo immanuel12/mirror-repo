@@ -11,8 +11,8 @@ pool: agentpool  # Menggunakan agen Ubuntu yang dikelola oleh Microsoft
 
 variables:
   dockerRegistryServiceConnection: 'devops-poc'  # Ganti dengan service connection ke Docker Hub
-  imageRepository: 'nuek21/fe:latest'  # Ganti dengan nama repository Docker Hub kamu
-  tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
+  imageRepository: 'nuek21/fe'  # Ganti dengan nama repository Docker Hub kamu
+  tag: 'latest'  # Menggunakan "latest" sebagai tag versi image
   containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
 
 steps:
@@ -37,8 +37,7 @@ steps:
       command: 'buildAndPush'
       Dockerfile: 'literature-frontend-main/Dockerfile'
       tags: |
-        latest
-        $(tag)
+        $(tag)  # Gunakan tag yang telah diatur
 
   # Langkah 4: Jalankan container dengan port 3000
   - script: |
