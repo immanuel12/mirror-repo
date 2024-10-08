@@ -14,7 +14,11 @@ variables:
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
 
 steps:
-  # Langkah 1: Install dependencies dan jalankan tes pada aplikasi Node.js
+  # Langkah 1: Checkout kode dari repositori
+  - task: Checkout@1
+    displayName: 'Checkout repository code'
+
+  # Langkah 2: Install dependencies dan jalankan tes pada aplikasi Node.js
   - task: NodeTool@0
     inputs:
       versionSpec: '14.x'  # Versi Node.js yang akan digunakan (ubah sesuai kebutuhan)
@@ -27,7 +31,7 @@ steps:
       npm test
     displayName: 'Install dependencies and run tests'
 
-  # Langkah 2: Build Docker image
+  # Langkah 3: Build Docker image
   - task: Docker@2
     inputs:
       command: 'build'
@@ -38,7 +42,7 @@ steps:
       arguments: '-f Dockerfile .'
     displayName: 'Build Docker Image'
 
-  # Langkah 3: Jalankan container dari Docker image yang telah dibuild
+  # Langkah 4: Jalankan container dari Docker image yang telah dibuild
   - script: |
       echo "Running Docker container locally..."
       docker run -d -p 3000:3000 --name your-app-container your-app:$(tag)
