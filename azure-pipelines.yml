@@ -8,7 +8,7 @@ trigger:
     - project
 
 pool:
-  vmImage: 'ubuntu-latest'  # Menggunakan agen Ubuntu
+  name: 'agentpool'  # Menggunakan agentpool yang disediakan
 
 variables:
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
