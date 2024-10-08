@@ -13,6 +13,7 @@ variables:
   dockerRegistryServiceConnection: 'devops-poc'  # Ganti dengan service connection ke Docker Hub
   imageRepository: 'nuek21/testing-node'  # Ganti dengan nama repository Docker Hub kamu
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
+  containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
 
 steps:
   # Langkah 1: Checkout repository
@@ -39,6 +40,11 @@ steps:
         latest
         $(tag)
 
-  # Langkah 4: Publish build artifacts (opsional)
+  # Langkah 4: Jalankan container dengan port 3000
+  - script: |
+      docker run -d -p 3000:3000 --name $(containerName) $(imageRepository):$(tag)
+    displayName: 'Run Docker Container on Port 3000'
+
+  # Langkah 5: Publish build artifacts (opsional)
   - publish: $(Build.ArtifactStagingDirectory)
     artifact: drop
