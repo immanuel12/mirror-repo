@@ -34,7 +34,7 @@ steps:
       containerRegistry: '$(dockerRegistryServiceConnection)'
       repository: '$(imageRepository)'
       command: 'buildAndPush'
-      Dockerfile: 'Dockerfile'
+      Dockerfile: 'poc/Dockerfile'
       tags: |
         latest
         $(tag)
