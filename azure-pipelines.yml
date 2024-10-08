@@ -7,8 +7,7 @@ trigger:
     include:
       - project
 
-pool:
-  vmImage: 'ubuntu-latest'  # Menggunakan agen Ubuntu terbaru untuk menjalankan pipeline
+pool: agentpool  # Menggunakan agen Ubuntu terbaru untuk menjalankan pipeline
 
 variables:
   dockerRegistryServiceConnection: 'devops-poc'  # Service connection ke Docker Hub
