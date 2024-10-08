@@ -11,7 +11,7 @@ pool: agentpool  # Menggunakan agen Ubuntu yang dikelola oleh Microsoft
 
 variables:
   dockerRegistryServiceConnection: 'devops-poc'  # Ganti dengan service connection ke Docker Hub
-  imageRepository: 'nuek21/fe'  # Ganti dengan nama repository Docker Hub kamu
+  imageRepository: 'nuek21/fe:'  # Ganti dengan nama repository Docker Hub kamu
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
 
