@@ -2,6 +2,10 @@ trigger:
   branches:
     include:
       - main  # Jalankan pipeline ketika ada perubahan di branch master
+  
+  paths:
+    include:
+    - project
 
 pool: agentpool  # Menggunakan agen Ubuntu untuk menjalankan pipeline
 
