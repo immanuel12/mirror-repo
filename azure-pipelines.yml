@@ -6,8 +6,8 @@ trigger:
 pool: agentpool  # Menggunakan agen Ubuntu untuk menjalankan pipeline
 
 variables:
-  dockerRegistryServiceConnection: 'DockerHub'  # Service connection ke Docker Hub
-  imageRepository: 'your-dockerhub-username/your-app'  # Nama repository di Docker Hub
+  dockerRegistryServiceConnection: 'devops-poc'  # Service connection ke Docker Hub
+  imageRepository: 'nuek21/app'  # Nama repository di Docker Hub
   containerRegistry: 'docker.io'
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
 
