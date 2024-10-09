@@ -25,14 +25,12 @@ steps:
       versionSpec: '14.x'
     displayName: 'Install Node.js'
 
+  # Langkah 3: Install dependencies dan build aplikasi
   - script: |
-      npm install
-    displayName: 'Install dependencies'
-
-  # Langkah 3: Build aplikasi (menghasilkan folder dist)
-  - script: |
-      npm run build  # Pastikan ini perintah yang benar untuk menghasilkan folder dist
-    displayName: 'Build application'
+      cd poc  # Pindah ke direktori poc
+      npm install  # Instal dependensi
+      npm run build  # Jalankan build
+    displayName: 'Install dependencies and Build application'
 
   # Langkah 4: Build Docker image dan push ke Docker Hub
   - task: Docker@2
@@ -40,7 +38,7 @@ steps:
       containerRegistry: '$(dockerRegistryServiceConnection)'
       repository: '$(imageRepository)'
       command: 'buildAndPush'
-      Dockerfile: 'poc/Dockerfile'  # Ganti jika lokasi Dockerfile berbeda
+      Dockerfile: 'poc/Dockerfile'  # Pastikan path ini sesuai
       tags: |
         latest
         $(tag)
@@ -53,7 +51,7 @@ steps:
   # Langkah 6: Copy files ke folder artefak
   - task: CopyFiles@2
     inputs:
-      SourceFolder: '$(Build.SourcesDirectory)/dist'  # Pastikan ini mengarah ke folder yang benar
+      SourceFolder: '$(Build.SourcesDirectory)/poc/dist'  # Path ke folder dist
       Contents: '**'
       TargetFolder: '$(Build.ArtifactStagingDirectory)/custom'  # Folder untuk menyimpan artefak
 
