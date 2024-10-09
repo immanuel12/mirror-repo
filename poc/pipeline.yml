@@ -29,7 +29,7 @@ steps:
   - script: |
       cd poc  # Pindah ke direktori poc
       npm install  # Instal dependensi
-      npm run build || { echo "Build failed"; exit 1; }  # Jalankan build dan tangani kesalahan
+      npm run build  # Jalankan build
     displayName: 'Install dependencies and Build application'
 
   # Langkah 4: Build Docker image dan push ke Docker Hub
@@ -45,11 +45,23 @@ steps:
 
   # Langkah 5: Jalankan container dengan port 3000
   - script: |
-      docker run -d -p 3000:3000 --name $(containerName) $(imageRepository):$(tag) || { echo "Failed to run container"; exit 1; }  # Tangani kesalahan
+      docker run -d -p 3000:3000 --name $(containerName) $(imageRepository):$(tag)
     displayName: 'Run Docker Container on Port 3000'
 
+  # Langkah 6: Menyimpan hasil build ke dalam artefak
+  - script: |
+      cd poc  # Pindah ke direktori poc untuk mengakses hasil build
+      if [ -d "dist" ]; then  # Periksa apakah folder dist ada
+          cp -r dist/* $(Build.ArtifactStagingDirectory)  # Salin hasil build ke direktori artefak
+      else
+          echo "No build output found in 'dist' directory"; exit 1;  # Tangani jika tidak ada output
+      fi
+    displayName: 'Copy build output to artifacts'
+
+  # Langkah 7: Publish artifacts ke Azure DevOps
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'drop'
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)'  # Publikasi folder artefak
+      artifactName: 'drop'  # Nama artefak yang akan muncul di dashboard
       publishLocation: 'Container'
+    displayName: 'Publish artifacts'
