@@ -14,6 +14,7 @@ variables:
   imageRepository: 'nuek21/testing-node'  # Ganti dengan nama repository Docker Hub kamu
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
+  proceedToMaster: 'no'  # Default value untuk keputusan melanjutkan ke master atau tidak
 
 stages:
   - stage: BuildAndTest
@@ -72,27 +73,15 @@ stages:
               publishLocation: 'Container'
             displayName: 'Publish artifacts'
 
-  # Stage approval manual untuk deploy ke master
+  # Stage deploy ke master hanya jika variabel proceedToMaster = yes
   - stage: DeployToMaster
     displayName: 'Deploy to Master'
     dependsOn: BuildAndTest
-    condition: succeeded()
+    condition: and(succeeded(), eq(variables['proceedToMaster'], 'yes'))
 
     jobs:
-      - job: Approval
-        displayName: 'Manual Approval'
-        steps:
-          - task: ManualValidation@0
-            inputs:
-              instructions: 'Do you want to proceed with the deployment to master?'
-              onTimeout: 'reject'
-              timeout: '43200'  # Timeout untuk konfirmasi manual, 12 jam (43200 detik)
-            displayName: 'Manual Approval Check'
-
       - job: Deploy
         displayName: 'Deploy to Master'
-        dependsOn: Approval
-        condition: eq(variables['Build.SourceBranchName'], 'main')  # Jalankan jika di branch main
         steps:
           # Langkah-langkah deploy ke master bisa ditambahkan di sini, seperti push ke branch master
           - script: |
