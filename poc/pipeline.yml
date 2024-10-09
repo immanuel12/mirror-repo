@@ -46,5 +46,15 @@ steps:
     displayName: 'Run Docker Container on Port 3000'
 
   # Langkah 5: Publish build artifacts (opsional)
-  - publish: $(Build.ArtifactStagingDirectory)
-    artifact: drop
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)/dist'
+      Contents: '**'
+      TargetFolder: '$(Build.CustomArtifactDirectory)'  # Gunakan direktori custom
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.CustomArtifactDirectory)'  # Gunakan direktori custom
+      ArtifactName: 'custom-drop'
+      publishLocation: 'Container'
+
