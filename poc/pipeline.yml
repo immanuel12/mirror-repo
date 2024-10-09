@@ -50,11 +50,11 @@ steps:
 
   # Langkah 6: Copy files ke folder artefak
   - task: CopyFiles@2
-      displayName: 'Copy scripts'
-      inputs:
-        contents: 'scripts/**'
-        targetFolder: '$(Build.ArtifactStagingDirectory)'
+    displayName: 'Copy scripts'
+    inputs:
+      contents: 'scripts/**'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
 
   - publish: '$(Build.ArtifactStagingDirectory)/scripts'
-      displayName: 'Publish script'
-      artifact: drop
+    displayName: 'Publish script'
+    artifact: drop
