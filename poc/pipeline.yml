@@ -73,19 +73,3 @@ stages:
               publishLocation: 'Container'
             displayName: 'Publish artifacts'
 
-  # Stage deploy ke master hanya jika variabel proceedToMaster = yes
-  - stage: DeployToMaster
-    displayName: 'Deploy to Master'
-    dependsOn: BuildAndTest
-    condition: and(succeeded(), eq(variables['proceedToMaster'], 'yes'))
-
-    jobs:
-      - job: Deploy
-        displayName: 'Deploy to Master'
-        steps:
-          # Langkah-langkah deploy ke master bisa ditambahkan di sini, seperti push ke branch master
-          - script: |
-              echo "Merging changes to master branch"
-              git checkout master
-              git merge main
-            displayName: 'Merge to Master'
