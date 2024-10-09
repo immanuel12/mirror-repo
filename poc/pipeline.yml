@@ -14,7 +14,10 @@ variables:
   imageRepository: 'nuek21/testing-node'  # Ganti dengan nama repository Docker Hub kamu
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
-  proceedToMaster: 'yes'  # Ubah default untuk melanjutkan ke main jika build sukses
+  organization: 'YOUR_ORG'  # Ganti dengan nama organisasi Azure DevOps kamu
+  project: 'YOUR_PROJECT'  # Ganti dengan nama project Azure DevOps kamu
+  repository: 'YOUR_REPO'  # Ganti dengan nama repository Azure DevOps kamu
+  azureDevOpsToken: $(System.AccessToken)  # Token akses DevOps untuk autentikasi
 
 stages:
   - stage: BuildAndTest
@@ -81,13 +84,17 @@ stages:
       - job: PR
         displayName: 'Create Pull Request from dev to main'
         steps:
-          # Langkah 8: Membuat pull request dari dev ke main
-          - task: AzureReposPullRequest@1
-            inputs:
-              repositoryName: '$(Build.Repository.Name)'  # Nama repository
-              sourceBranch: 'dev'  # Branch asal (dev)
-              targetBranch: 'main'  # Branch tujuan (main)
-              title: 'Auto PR: Merging changes from dev to main'
-              description: 'Pull request otomatis untuk menggabungkan perubahan dari dev ke main'
-              reviewers: ''  # Opsional: Menambahkan reviewer jika diinginkan
-            displayName: 'Create Pull Request from dev to main'
+          # Langkah 8: Membuat pull request dari dev ke main menggunakan API
+          - script: |
+              echo "Creating Pull Request from dev to main..."
+              curl -X POST -H "Content-Type: application/json" \
+              -H "Authorization: Bearer $(azureDevOpsToken)" \
+              -d '{
+                  "sourceRefName": "refs/heads/dev",
+                  "targetRefName": "refs/heads/main",
+                  "title": "Auto PR: Merging changes from dev to main",
+                  "description": "Pull request otomatis untuk menggabungkan perubahan dari dev ke main",
+                  "reviewers": []
+              }' \
+              https://dev.azure.com/$(organization)/$(project)/_apis/git/repositories/$(repository)/pullrequests?api-version=6.0
+            displayName: 'Create Pull Request via REST API'
