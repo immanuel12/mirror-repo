@@ -5,7 +5,7 @@ trigger:
   
   paths:
     include:
-    - poc
+      - poc  # Hanya jalankan pipeline jika ada perubahan di folder poc
 
 pool: agentpool  # Menggunakan agen Ubuntu yang dikelola oleh Microsoft
 
@@ -29,22 +29,37 @@ steps:
       npm install
     displayName: 'Install dependencies'
 
-  # Langkah 3: Build Docker image dan push ke Docker Hub
+  # Langkah 3: Build aplikasi (menghasilkan folder dist)
+  - script: |
+      npm run build  # Pastikan ini perintah yang benar untuk menghasilkan folder dist
+    displayName: 'Build application'
+
+  # Langkah 4: Build Docker image dan push ke Docker Hub
   - task: Docker@2
     inputs:
       containerRegistry: '$(dockerRegistryServiceConnection)'
       repository: '$(imageRepository)'
       command: 'buildAndPush'
-      Dockerfile: 'poc/Dockerfile'
+      Dockerfile: 'poc/Dockerfile'  # Ganti jika lokasi Dockerfile berbeda
       tags: |
         latest
         $(tag)
 
-  # Langkah 4: Jalankan container dengan port 3000
+  # Langkah 5: Jalankan container dengan port 3000
   - script: |
       docker run -d -p 3000:3000 --name $(containerName) $(imageRepository):$(tag)
     displayName: 'Run Docker Container on Port 3000'
 
-  # Langkah 5: Publish build artifacts (opsional)
-  - publish: $(Build.ArtifactStagingDirectory)
-    artifact: drop
+  # Langkah 6: Copy files ke folder artefak
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)/dist'  # Pastikan ini mengarah ke folder yang benar
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/custom'  # Folder untuk menyimpan artefak
+
+  # Langkah 7: Publish build artifacts
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/custom'  # Path ke artefak
+      ArtifactName: 'custom-drop'  # Nama artefak
+      publishLocation: 'Container'
