@@ -50,14 +50,11 @@ steps:
 
   # Langkah 6: Copy files ke folder artefak
   - task: CopyFiles@2
-    inputs:
-      SourceFolder: '$(Build.SourcesDirectory)/poc/dist'  # Path ke folder dist
-      Contents: '**'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)/custom'  # Folder untuk menyimpan artefak
+      displayName: 'Copy scripts'
+      inputs:
+        contents: 'scripts/**'
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
 
-  # Langkah 7: Publish build artifacts
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/custom'  # Path ke artefak
-      ArtifactName: 'custom-drop'  # Nama artefak
-      publishLocation: 'Container'
+  - publish: '$(Build.ArtifactStagingDirectory)/scripts'
+      displayName: 'Publish script'
+      artifact: drop
