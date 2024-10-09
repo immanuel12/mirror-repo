@@ -14,6 +14,8 @@ variables:
   imageRepository: 'nuek21/testing-node'  # Ganti dengan nama repository Docker Hub kamu
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
+  npmRegistry: 'https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/npm/registry/'
+  npmAuthToken: 'joxzvqzbq7vaqrctltxtupz66is627wjnxnuzrvciblggvle6req'
 
 steps:
   # Langkah 1: Checkout repository
@@ -26,10 +28,9 @@ steps:
     displayName: 'Install Node.js'
 
   - script: |
-      echo "registry=https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/npm/registry/" > .npmrc
-      echo "always-auth=true" >> .npmrc
-      npx vsts-npm-auth -config .npmrc
-    displayName: 'Setup .npmrc and authenticate'  
+      echo "registry=$(npmRegistry)" > .npmrc
+      echo "//pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/npm/registry/:_authToken=$(npmAuthToken)" >> .npmrc
+    displayName: 'Setup .npmrc with manual authentication'
 
   # Langkah 3: Install dependencies dan build aplikasi
   - script: |
