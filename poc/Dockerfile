@@ -10,8 +10,8 @@ COPY package*.json ./
 # Copy the rest of the application
 COPY . .
 
-# Expose port 3000
-EXPOSE 3000
+# Expose port 3001
+EXPOSE 3001
 
 # Command to run the application
 CMD [ "npm", "start" ]
