@@ -5,7 +5,7 @@ trigger:
   
   paths:
     include:
-      - project
+      - project/
 
 pool: agentpool  # Menggunakan agen Ubuntu terbaru untuk menjalankan pipeline
 
