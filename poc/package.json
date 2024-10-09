@@ -5,12 +5,10 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "build": "echo 'No build step defined'",  // Jika tidak ada build step, bisa menggunakan ini
+    "build": "echo 'No build step defined'",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    // Hapus entri http di sini
-  }
+  "dependencies": {}
 }
