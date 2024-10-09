@@ -14,8 +14,6 @@ variables:
   imageRepository: 'nuek21/testing-node'  # Ganti dengan nama repository Docker Hub kamu
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
-  npmRegistry: 'https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/npm/registry/'
-  npmAuthToken: 'joxzvqzbq7vaqrctltxtupz66is627wjnxnuzrvciblggvle6req'
 
 steps:
   # Langkah 1: Checkout repository
@@ -26,11 +24,6 @@ steps:
     inputs:
       versionSpec: '14.x'
     displayName: 'Install Node.js'
-
-  - script: |
-      echo "registry=$(npmRegistry)" > .npmrc
-      echo "//pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/npm/registry/:_authToken=$(npmAuthToken)" >> .npmrc
-    displayName: 'Setup .npmrc with manual authentication'
 
   # Langkah 3: Install dependencies dan build aplikasi
   - script: |
@@ -54,16 +47,6 @@ steps:
   - script: |
       docker run -d -p 3000:3000 --name $(containerName) $(imageRepository):$(tag)
     displayName: 'Run Docker Container on Port 3000'
-
-  # Langkah 6: Menyimpan hasil build ke dalam artefak
-  - script: |
-      cd poc  # Pindah ke direktori poc untuk mengakses hasil build
-      if [ -d "dist" ]; then  # Periksa apakah folder dist ada
-          cp -r dist/* $(Build.ArtifactStagingDirectory)  # Salin hasil build ke direktori artefak
-      else
-          echo "No build output found in 'dist' directory"; exit 1;  # Tangani jika tidak ada output
-      fi
-    displayName: 'Copy build output to artifacts'
 
   # Langkah 7: Publish artifacts ke Azure DevOps
   - task: PublishBuildArtifacts@1
