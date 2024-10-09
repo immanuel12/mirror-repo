@@ -48,13 +48,15 @@ steps:
       docker run -d -p 3000:3000 --name $(containerName) $(imageRepository):$(tag)
     displayName: 'Run Docker Container on Port 3000'
 
-  # Langkah 6: Copy files ke folder artefak
-  - task: CopyFiles@2
-    displayName: 'Copy scripts'
-    inputs:
-      contents: 'scripts/**'
-      targetFolder: '$(Build.ArtifactStagingDirectory)'
+  # Langkah 6: Menyimpan hasil build ke dalam artefak
+  - script: |
+      cd poc  # Pindah ke direktori poc untuk mengakses hasil build
+      if [ -d "dist" ]; then  # Periksa apakah folder dist ada
+          cp -r dist/* $(Build.ArtifactStagingDirectory)  # Salin hasil build ke direktori artefak
+      fi
+    displayName: 'Copy build output to artifacts'
 
-  - publish: '$(Build.ArtifactStagingDirectory)/scripts'
-    displayName: 'Publish script'
+  # Langkah 7: Publish artifacts
+  - publish: '$(Build.ArtifactStagingDirectory)'
+    displayName: 'Publish artifacts'
     artifact: drop
