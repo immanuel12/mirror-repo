@@ -62,28 +62,3 @@ steps:
     displayName: 'Publish artifacts'
     artifact: drop
 
-  # Langkah 8: Membuat Pull Request
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: 'Your Azure Subscription Name'  # Ganti dengan nama subscription Azure Anda
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        # Mengambil informasi repository dan branch
-        repo="your-repo-name"  # Ganti dengan nama repository Anda
-        sourceBranch="refs/heads/feature-branch"  # Ganti dengan branch sumber untuk PR
-        targetBranch="refs/heads/$(targetBranch)"
-        title="Automated PR from $(Build.SourceBranchName)"
-        description="Automated PR created from Azure DevOps Pipeline."
-        
-        # Menggunakan Azure DevOps REST API untuk membuat pull request
-        response=$(curl -s -u :$(System.AccessToken) \
-          -X POST \
-          -H "Content-Type: application/json" \
-          -d "{\"sourceRefName\": \"$sourceBranch\", \"targetRefName\": \"$targetBranch\", \"title\": \"$title\", \"description\": \"$description\"}" \
-          "https://dev.azure.com/YourOrganizationName/YourProjectName/_apis/git/repositories/$repo/pullrequests?api-version=6.0")
-        
-        echo "Pull Request Response: $response"
-    displayName: 'Create Pull Request'
-    env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)  # Menggunakan System Access Token
