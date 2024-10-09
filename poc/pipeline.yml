@@ -48,17 +48,8 @@ steps:
       docker run -d -p 3000:3000 --name $(containerName) $(imageRepository):$(tag) || { echo "Failed to run container"; exit 1; }  # Tangani kesalahan
     displayName: 'Run Docker Container on Port 3000'
 
-  # Langkah 6: Menyimpan hasil build ke dalam artefak
-  - script: |
-      cd poc  # Pindah ke direktori poc untuk mengakses hasil build
-      if [ -d "dist" ]; then  # Periksa apakah folder dist ada
-          cp -r dist/* $(Build.ArtifactStagingDirectory)  # Salin hasil build ke direktori artefak
-      else
-          echo "No build output found in 'dist' directory"; exit 1;  # Tangani jika tidak ada output
-      fi
-    displayName: 'Copy build output to artifacts'
-
-  # Langkah 7: Publish artifacts
-  - publish: '$(Build.ArtifactStagingDirectory)'
-    displayName: 'Publish artifacts'
-    artifact: drop
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
