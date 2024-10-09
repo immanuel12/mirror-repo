@@ -28,7 +28,6 @@ steps:
 
   - script: |
       npm install
-      npm run build
     displayName: 'Install dependencies'
 
   # Langkah 3: Build Docker image dan push ke Docker Hub
