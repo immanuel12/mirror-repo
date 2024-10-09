@@ -14,6 +14,7 @@ variables:
   imageRepository: 'nuek21/testing-node'  # Ganti dengan nama repository Docker Hub kamu
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
+  artifactName: 'build-artifact' # Nama artifacts untuk disimpan
 
 steps:
   # Langkah 1: Checkout repository
@@ -27,6 +28,7 @@ steps:
 
   - script: |
       npm install
+      npm run build
     displayName: 'Install dependencies'
 
   # Langkah 3: Build Docker image dan push ke Docker Hub
@@ -46,15 +48,15 @@ steps:
     displayName: 'Run Docker Container on Port 3000'
 
   # Langkah 5: Publish build artifacts (opsional)
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: '$(Build.SourcesDirectory)/dist'
-      Contents: '**'
-      TargetFolder: '$(Build.CustomArtifactDirectory)'  # Gunakan direktori custom
+  - script: |
+      mkdir -p $(Build.ArtifactStagingDirectory)
+      cp -R ./dist/* $(Build.ArtifactStagingDirectory)  # Ganti dengan path hasil build aplikasi
+    displayName: 'Copy build results to artifacts directory'
 
+  # Langkah 6: Publish build artifacts
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.CustomArtifactDirectory)'  # Gunakan direktori custom
-      ArtifactName: 'custom-drop'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: '$(artifactName)'  # Nama artifacts yang ditentukan di variabel
       publishLocation: 'Container'
 
