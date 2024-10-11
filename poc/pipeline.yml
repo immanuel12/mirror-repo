@@ -42,7 +42,7 @@ steps:
     inputs:
       command: 'custom'
       workingDir: 'poc'
-      customCommand: 'run build'
+      customCommand: 'build'
       customEndpoint: 'npmconn'
     displayName: 'Build Application'
 
