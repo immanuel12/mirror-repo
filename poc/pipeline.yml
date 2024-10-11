@@ -33,17 +33,17 @@ steps:
   # Langkah 3: Install dependencies dan build aplikasi
   - task: Npm@1
     inputs:
-      command: 'install'  # Gunakan 'install' untuk menginstal dependencies
+      command: 'install'
       workingDir: 'poc'
-      npmServiceConnection: '$(npmServiceConnection)'
+      customEndpoint: 'npmconn'
     displayName: 'Npm Install'
 
   - task: Npm@1
     inputs:
       command: 'custom'
-      customCommand: 'run build'
       workingDir: 'poc'
-      npmServiceConnection: '$(npmServiceConnection)'
+      customCommand: 'run build'
+      customEndpoint: 'npmconn'
     displayName: 'Build Application'
 
   # Langkah 4: Build Docker image dan push ke Docker Hub
