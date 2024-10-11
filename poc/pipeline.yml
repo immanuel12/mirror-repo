@@ -32,6 +32,10 @@ steps:
       npm install  # Instal dependensi
       npm run build  # Jalankan build
     displayName: 'Install dependencies and Build application'
+
+  - task: npmAuthenticate@0
+  inputs:
+    workingFile: poc/.npmrc 
   
   - task: Npm@1
     inputs:
