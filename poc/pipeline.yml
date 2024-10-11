@@ -29,19 +29,14 @@ steps:
   - task: npmAuthenticate@0
     inputs:
       workingFile: 'poc/.npmrc'
-    script: | 
+
+  # Langkah 3: Install dependencies dan build aplikasi
+  - script: |
       cd poc  # Pindah ke direktori poc
       npm install  # Instal dependensi
       npm run build  # Jalankan build
       npm publish
-
-  # Langkah 3: Install dependencies dan build aplikasi
-  # - script: |
-  #     cd poc  # Pindah ke direktori poc
-  #     npm install  # Instal dependensi
-  #     npm run build  # Jalankan build
-  #     npm publish
-  #   displayName: 'Install dependencies and Build application'
+    displayName: 'Install dependencies and Build application'
 
   # Langkah 4: Build Docker image dan push ke Docker Hub
   - task: Docker@2
