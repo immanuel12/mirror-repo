@@ -39,6 +39,7 @@ steps:
   
   - task: Npm@1
     inputs:
+      workingFile: 'poc/.npmrc' 
       command: 'publish'
       workingDir: 'poc'
       publishRegistry: 'useFeed'
