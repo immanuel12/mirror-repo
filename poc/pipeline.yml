@@ -28,7 +28,7 @@ steps:
     displayName: 'Install Node.js'
 
   - script: |
-      npm install -g npm
+      npm install
     displayName: 'Install dependencies'
 
   - task: npmAuthenticate@0
