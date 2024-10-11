@@ -4,7 +4,8 @@
   "description": "Node.js simple app",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "build": "echo 'Building application...'" // Contoh perintah build
   },
   "author": "",
   "license": "ISC",
