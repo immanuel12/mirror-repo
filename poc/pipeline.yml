@@ -27,6 +27,10 @@ steps:
       versionSpec: '14.x'
     displayName: 'Install Node.js'
 
+  - script: |
+      npm install -g npm
+    displayName: 'Install dependencies
+
   - task: npmAuthenticate@0
     inputs:
       workingFile: 'poc/.npmrc'
