@@ -35,7 +35,6 @@ steps:
 
   - task: npmAuthenticate@0
     inputs:
-      feedUrl: 'https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/npm/registry'
       workingFile: 'poc/.npmrc'
   
   - task: Npm@1
