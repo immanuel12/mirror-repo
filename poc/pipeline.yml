@@ -38,7 +38,6 @@ steps:
       customCommand: 'npm build'
       customRegistry: 'useFeed'
       customFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
-    displayName: 'Npm build'
   
   - task: Npm@1
     inputs:
@@ -46,7 +45,6 @@ steps:
       workingDir: 'poc'
       publishRegistry: 'useFeed'
       publishFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
-    displayName: 'Npm Publish'
 
   # Langkah 4: Build Docker image dan push ke Docker Hub
   - task: Docker@2
