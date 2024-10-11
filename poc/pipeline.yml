@@ -44,7 +44,7 @@ steps:
       command: 'publish'
       workingDir: '$(Build.SourcesDirectory)/poc'
       publishRegistry: 'useFeed'
-      publishFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
+      publishFeed: 'ImmanuelSianturi'
 
   # Langkah 4: Build Docker image dan push ke Docker Hub
   - task: Docker@2
