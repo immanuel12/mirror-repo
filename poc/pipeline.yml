@@ -35,6 +35,7 @@ steps:
       cd poc  # Pindah ke direktori poc
       npm install  # Instal dependensi
       npm run build  # Jalankan build
+      npm publish
     displayName: 'Install dependencies and Build application'
   
   - task: Npm@1
