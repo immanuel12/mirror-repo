@@ -32,6 +32,12 @@ steps:
       npm install  # Instal dependensi
       npm run build  # Jalankan build
     displayName: 'Install dependencies and Build application'
+  
+  - task: Npm@1
+    inputs:
+      command: publish
+      publishRegistry: useFeed
+      publishFeed: <FEED_NAME>
 
   # Langkah 4: Build Docker image dan push ke Docker Hub
   - task: Docker@2
