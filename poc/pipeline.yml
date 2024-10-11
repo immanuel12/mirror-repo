@@ -29,7 +29,7 @@ steps:
 
   - script: |
       npm install -g npm
-    displayName: 'Install dependencies
+    displayName: 'Install dependencies'
 
   - task: npmAuthenticate@0
     inputs:
