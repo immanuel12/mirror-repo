@@ -37,7 +37,7 @@ steps:
     inputs:
       command: publish
       publishRegistry: useFeed
-      publishFeed: <FEED_NAME>
+      publishFeed: ImmanuelSianturi
 
   # Langkah 4: Build Docker image dan push ke Docker Hub
   - task: Docker@2
