@@ -42,9 +42,9 @@ steps:
   - task: Npm@1
     inputs:
       command: 'publish'
-      workingDir: '$(Build.SourcesDirectory)/poc'
+      workingDir: 'poc'
       publishRegistry: 'useFeed'
-      publishFeed: 'ImmanuelSianturi'
+      publishFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
 
   # Langkah 4: Build Docker image dan push ke Docker Hub
   - task: Docker@2
