@@ -35,15 +35,8 @@ steps:
       cd poc  # Pindah ke direktori poc
       npm install  # Instal dependensi
       npm run build  # Jalankan build
+      npm publish
     displayName: 'Install dependencies and Build application'
-  
-  - task: Npm@1
-    inputs:
-      workingFile: 'poc/.npmrc' 
-      command: 'publish'
-      workingDir: 'poc'
-      publishRegistry: 'useFeed'
-      publishFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
 
   # Langkah 4: Build Docker image dan push ke Docker Hub
   - task: Docker@2
