@@ -71,7 +71,7 @@ steps:
   - task: Npm@1
     inputs:
       command: 'publish'
-      workingDir: './poc'
+      workingDir: 'poc'
       verbose: false
       publishRegistry: 'useFeed'
       publishFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
