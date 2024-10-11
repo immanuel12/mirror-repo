@@ -21,6 +21,11 @@ steps:
   # Langkah 1: Checkout repository
   - checkout: self
 
+  # Langkah 2: Install Node.js dependencies
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '18.x'
+    displayName: 'Install Node.js'
 
   - task: npmAuthenticate@0
     inputs:
