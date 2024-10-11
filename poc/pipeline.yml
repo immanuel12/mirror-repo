@@ -31,10 +31,6 @@ steps:
     inputs:
       workingFile: 'poc/.npmrc'
 
-  - script: |
-      sudo npm install -g npm
-    displayName: 'Akses root'
-
   # Langkah 3: Install dependencies dan build aplikasi
   - task: Npm@1
     inputs:
