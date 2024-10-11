@@ -29,7 +29,7 @@ steps:
   - task: npmAuthenticate@0
     inputs:
       workingFile: 'poc/.npmrc'
-    script: |
+    script: | 
       cd poc  # Pindah ke direktori poc
       npm install  # Instal dependensi
       npm run build  # Jalankan build
