@@ -40,11 +40,10 @@ steps:
 
   - task: Npm@1
     inputs:
-      command: 'custom'
+      command: 'publish'
       workingDir: 'poc'
-      customCommand: 'build'
-      customEndpoint: 'npmconn'
-    displayName: 'Build Application'
+      publishEndpoint: 'npmconn'
+    displayName: 'Publish'
 
   # Langkah 4: Build Docker image dan push ke Docker Hub
   - task: Docker@2
