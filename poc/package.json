@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "http": "0.0.1"
+  
   },
   "publishConfig": {
     "registry": "https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/npm/registry/"
