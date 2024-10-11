@@ -15,6 +15,7 @@ variables:
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
   targetBranch: 'main'  # Branch target untuk pull request
+  npmServiceConnection: 'npmconn' 
 
 steps:
   # Langkah 1: Checkout repository
