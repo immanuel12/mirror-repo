@@ -26,16 +26,16 @@ steps:
       versionSpec: '14.x'
     displayName: 'Install Node.js'
 
+  - task: npmAuthenticate@0
+    inputs:
+      workingFile: 'poc/.npmrc'
+
   # Langkah 3: Install dependencies dan build aplikasi
   - script: |
       cd poc  # Pindah ke direktori poc
       npm install  # Instal dependensi
       npm run build  # Jalankan build
     displayName: 'Install dependencies and Build application'
-
-  - task: npmAuthenticate@0
-    inputs:
-      workingFile: 'poc/.npmrc'
   
   - task: Npm@1
     inputs:
