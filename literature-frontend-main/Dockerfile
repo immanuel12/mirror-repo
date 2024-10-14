@@ -1,10 +1,8 @@
-FROM node:14-alpine
+FROM node:14
 
 WORKDIR apps
 
 COPY . .
-
-RUN npm install pm2 -g
 
 EXPOSE 3000
 
