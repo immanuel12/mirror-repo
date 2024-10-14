@@ -46,30 +46,30 @@ steps:
     displayName: 'Publish'
 
   # Langkah 4: Build Docker image dan push ke Docker Hub
-  - task: Docker@2
-    inputs:
-      containerRegistry: '$(dockerRegistryServiceConnection)'
-      repository: '$(imageRepository)'
-      command: 'buildAndPush'
-      Dockerfile: 'poc/Dockerfile'  # Pastikan path ini sesuai
-      tags: |
-        latest
-        $(tag)
+  # - task: Docker@2
+  #   inputs:
+  #     containerRegistry: '$(dockerRegistryServiceConnection)'
+  #     repository: '$(imageRepository)'
+  #     command: 'buildAndPush'
+  #     Dockerfile: 'poc/Dockerfile'  # Pastikan path ini sesuai
+  #     tags: |
+  #       latest
+  #       $(tag)
 
-  # Langkah 5: Jalankan container dengan port 3000
-  - script: |
-      docker run -d -p 3001:3001 --name $(containerName) $(imageRepository):$(tag)
-    displayName: 'Run Docker Container on Port 3001'
+  # # Langkah 5: Jalankan container dengan port 3000
+  # - script: |
+  #     docker run -d -p 3001:3001 --name $(containerName) $(imageRepository):$(tag)
+  #   displayName: 'Run Docker Container on Port 3001'
 
-  # Langkah 6: Menyimpan hasil build ke dalam artefak
-  - script: |
-      cd poc  # Pindah ke direktori poc untuk mengakses hasil build
-      if [ -d "dist" ]; then  # Periksa apakah folder dist ada
-          cp -r dist/* $(Build.ArtifactStagingDirectory)  # Salin hasil build ke direktori artefak
-      fi
-    displayName: 'Copy build output to artifacts'
+  # # Langkah 6: Menyimpan hasil build ke dalam artefak
+  # - script: |
+  #     cd poc  # Pindah ke direktori poc untuk mengakses hasil build
+  #     if [ -d "dist" ]; then  # Periksa apakah folder dist ada
+  #         cp -r dist/* $(Build.ArtifactStagingDirectory)  # Salin hasil build ke direktori artefak
+  #     fi
+  #   displayName: 'Copy build output to artifacts'
 
-  # Langkah 7: Publish artifacts
-  - publish: '$(Build.ArtifactStagingDirectory)'
-    displayName: 'Publish artifacts'
-    artifact: drop
+  # # Langkah 7: Publish artifacts
+  # - publish: '$(Build.ArtifactStagingDirectory)'
+  #   displayName: 'Publish artifacts'
+  #   artifact: drop
