@@ -14,7 +14,6 @@ variables:
   imageRepository: 'nuek21/fe'  # Ganti dengan nama repository Docker Hub kamu
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-fe'  # Nama container untuk menjalankan aplikasi
-  npmServiceConnection: 'npmconn'
 
 steps:
   # Langkah 1: Checkout repository
@@ -25,25 +24,6 @@ steps:
     inputs:
       versionSpec: '18.x'
     displayName: 'Install Node.js'
-
-  - task: npmAuthenticate@0
-    inputs:
-      workingFile: 'literature-frontend-main/.npmrc'
-
-  # Langkah 3: Install dependencies dan build aplikasi
-  # - task: Npm@1
-  #   inputs:
-  #     command: 'install'
-  #     workingDir: 'poc'
-  #     customEndpoint: 'npmconn'
-  #   displayName: 'Npm Install'
-
-  - task: Npm@1
-    inputs:
-      command: 'publish'
-      workingDir: 'literature-frontend-main'
-      publishEndpoint: 'npmconn'
-    displayName: 'Publish'
 
   # Langkah 3: Build Docker image dan push ke Docker Hub
   - task: Docker@2
