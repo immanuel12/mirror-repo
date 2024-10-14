@@ -41,7 +41,7 @@ steps:
   - task: Npm@1
     inputs:
       command: 'publish'
-      workingDir: 'poc'
+      workingDir: 'literature-frontend-main'
       publishEndpoint: 'npmconn'
     displayName: 'Publish'
 
