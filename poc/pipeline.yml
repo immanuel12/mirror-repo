@@ -38,6 +38,10 @@ steps:
   #     customEndpoint: 'npmconn'
   #   displayName: 'Npm Install'
 
+  - script: |
+    npm run build
+  displayName: 'Build Application'
+
   - task: Npm@1
     inputs:
       command: 'publish'
