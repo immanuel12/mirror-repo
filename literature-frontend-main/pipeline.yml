@@ -14,6 +14,7 @@ variables:
   imageRepository: 'nuek21/fe'  # Ganti dengan nama repository Docker Hub kamu
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-fe'  # Nama container untuk menjalankan aplikasi
+  npmServiceConnection: 'npmconn'
 
 steps:
   # Langkah 1: Checkout repository
