@@ -45,7 +45,7 @@ steps:
       publishEndpoint: 'npmconn'
     displayName: 'Publish'
 
-  Langkah 4: Build Docker image dan push ke Docker Hub
+  # Langkah 4: Build Docker image dan push ke Docker Hub
   - task: Docker@2
     inputs:
       containerRegistry: '$(dockerRegistryServiceConnection)'
