@@ -25,7 +25,7 @@ steps:
   # Langkah 3: Install dependencies dan build aplikasi
   - script: |
       npm install myapp@1.0.1
-  displayName: 'Use the downloaded artifact'
+    displayName: 'Use the downloaded artifact'
 
   - task: Npm@1
     inputs:
