@@ -25,9 +25,24 @@ steps:
       versionSpec: '14.x'
     displayName: 'Install Node.js'
 
-  - script: |
-      npm install
-    displayName: 'Install dependencies'
+  - task: npmAuthenticate@0
+    inputs:
+      workingFile: 'poc/.npmrc'
+
+  # Langkah 3: Install dependencies dan build aplikasi
+  # - task: Npm@1
+  #   inputs:
+  #     command: 'install'
+  #     workingDir: 'poc'
+  #     customEndpoint: 'npmconn'
+  #   displayName: 'Npm Install'
+
+  - task: Npm@1
+    inputs:
+      command: 'publish'
+      workingDir: 'poc'
+      publishEndpoint: 'npmconn'
+    displayName: 'Publish'
 
   # Langkah 3: Build Docker image dan push ke Docker Hub
   - task: Docker@2
@@ -44,7 +59,3 @@ steps:
   - script: |
       docker run -d -p 3000:3000 --name $(containerName) $(imageRepository):$(tag)
     displayName: 'Run Docker Container on Port 3000'
-
-  # Langkah 5: Publish build artifacts (opsional)
-  - publish: $(Build.ArtifactStagingDirectory)
-    artifact: drop
