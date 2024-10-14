@@ -56,20 +56,7 @@ steps:
         latest
         $(tag)
 
-  # Langkah 5: Jalankan container dengan port 3000
+  # Langkah 5: Jalankan container dengan port 3001
   - script: |
       docker run -d -p 3001:3001 --name $(containerName) $(imageRepository):$(tag)
     displayName: 'Run Docker Container on Port 3001'
-
-  # # Langkah 6: Menyimpan hasil build ke dalam artefak
-  # - script: |
-  #     cd poc  # Pindah ke direktori poc untuk mengakses hasil build
-  #     if [ -d "dist" ]; then  # Periksa apakah folder dist ada
-  #         cp -r dist/* $(Build.ArtifactStagingDirectory)  # Salin hasil build ke direktori artefak
-  #     fi
-  #   displayName: 'Copy build output to artifacts'
-
-  # # Langkah 7: Publish artifacts
-  # - publish: '$(Build.ArtifactStagingDirectory)'
-  #   displayName: 'Publish artifacts'
-  #   artifact: drop
