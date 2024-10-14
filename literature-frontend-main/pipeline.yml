@@ -28,7 +28,7 @@ steps:
 
   - task: npmAuthenticate@0
     inputs:
-      workingFile: 'poc/.npmrc'
+      workingFile: 'literature-frontend-main/.npmrc'
 
   # Langkah 3: Install dependencies dan build aplikasi
   # - task: Npm@1
