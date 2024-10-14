@@ -23,9 +23,12 @@ steps:
       workingFile: 'poc/.npmrc'
 
   # Langkah 3: Install dependencies dan build aplikasi
-  - script: |
-      npm install myapp@1.0.1
-    displayName: 'Use the downloaded artifact'
+  - task: Npm@1
+    inputs:
+      command: 'custom'
+      customCommand: 'npm install myapp@1.0.1'
+      customRegistry: 'useFeed'
+      customFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
 
   - task: Npm@1
     inputs:
