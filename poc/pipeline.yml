@@ -14,7 +14,6 @@ variables:
   imageRepository: 'nuek21/testing-node'  # Ganti dengan nama repository Docker Hub kamu
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
-  npmServiceConnection: 'npmconn' 
 
 steps:
   # Langkah 1: Checkout repository
@@ -31,12 +30,12 @@ steps:
       workingFile: 'poc/.npmrc'
 
   # Langkah 3: Install dependencies dan build aplikasi
-  - task: Npm@1
-    inputs:
-      command: 'install'
-      workingDir: 'poc'
-      customEndpoint: 'npmconn'
-    displayName: 'Npm Install'
+  # - task: Npm@1
+  #   inputs:
+  #     command: 'install'
+  #     workingDir: 'poc'
+  #     customEndpoint: 'npmconn'
+  #   displayName: 'Npm Install'
 
   - task: Npm@1
     inputs:
@@ -45,21 +44,21 @@ steps:
       publishEndpoint: 'npmconn'
     displayName: 'Publish'
 
-  # Langkah 4: Build Docker image dan push ke Docker Hub
-  # - task: Docker@2
-  #   inputs:
-  #     containerRegistry: '$(dockerRegistryServiceConnection)'
-  #     repository: '$(imageRepository)'
-  #     command: 'buildAndPush'
-  #     Dockerfile: 'poc/Dockerfile'  # Pastikan path ini sesuai
-  #     tags: |
-  #       latest
-  #       $(tag)
+  Langkah 4: Build Docker image dan push ke Docker Hub
+  - task: Docker@2
+    inputs:
+      containerRegistry: '$(dockerRegistryServiceConnection)'
+      repository: '$(imageRepository)'
+      command: 'buildAndPush'
+      Dockerfile: 'poc/Dockerfile'  # Pastikan path ini sesuai
+      tags: |
+        latest
+        $(tag)
 
-  # # Langkah 5: Jalankan container dengan port 3000
-  # - script: |
-  #     docker run -d -p 3001:3001 --name $(containerName) $(imageRepository):$(tag)
-  #   displayName: 'Run Docker Container on Port 3001'
+  # Langkah 5: Jalankan container dengan port 3000
+  - script: |
+      docker run -d -p 3001:3001 --name $(containerName) $(imageRepository):$(tag)
+    displayName: 'Run Docker Container on Port 3001'
 
   # # Langkah 6: Menyimpan hasil build ke dalam artefak
   # - script: |
