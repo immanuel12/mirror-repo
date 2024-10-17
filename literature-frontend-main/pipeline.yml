@@ -7,7 +7,7 @@ trigger:
     include:
     - literature-frontend-main
 
-pool: agentpool  # Menggunakan agen Ubuntu yang dikelola oleh Microsoft
+pool: agentpool  # Menggunakan agen yang dikelola Sendiri
 
 variables:
   dockerRegistryServiceConnection: 'devops-poc'  # Ganti dengan service connection ke Docker Hub
