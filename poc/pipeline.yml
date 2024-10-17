@@ -7,7 +7,7 @@ trigger:
     include:
       - poc  # Hanya jalankan pipeline jika ada perubahan di folder poc
 
-pool: agentpool  # Menggunakan agen Ubuntu yang dikelola oleh Microsoft
+pool: agentpool  # Menggunakan agen yang dikelola oleh Sendiri
 
 variables:
   dockerRegistryServiceConnection: 'devops-poc'  # Ganti dengan service connection ke Docker Hub
