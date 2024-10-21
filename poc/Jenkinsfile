@@ -6,7 +6,7 @@ pipeline {
             steps {
                 // Mengambil source code dari Azure DevOps
                 git branch: 'main', 
-                    url: 'https://ImmanuelSianturi@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc',
+                    url: 'https://ImmanuelSianturi@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc'
             }
         }
         
