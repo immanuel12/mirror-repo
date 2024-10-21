@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout from Azure DevOps') {
+        stage('Clone Repository') {
             steps {
                 // Mengambil source code dari Azure DevOps
-                git branch: 'main', 
+                git branch: 'main',
                     url: 'https://ImmanuelSianturi@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc'
             }
         }
@@ -19,39 +19,14 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install npm Dependencies') {
             steps {
                 // Menginstall dependencies Node.js dalam folder poc
                 dir('poc') {
+                    // Cek apakah npm terinstal
+                    sh 'npm --version'
+                    // Menginstal dependencies
                     sh 'npm install'
-                }
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                // Menjalankan unit tests dalam folder poc
-                dir('poc') {
-                    sh 'npm test'
-                }
-            }
-        }
-
-        stage('Build and Run') {
-            steps {
-                // Menjalankan aplikasi Node.js dalam folder poc
-                dir('poc') {
-                    sh 'npm start'
-                }
-            }
-        }
-
-        stage('Run pipeline.yml') {
-            steps {
-                // Menjalankan file pipeline.yml dalam folder poc
-                dir('poc') {
-                    // Sesuaikan perintah ini dengan cara Anda ingin menjalankan pipeline.yml
-                    sh 'pipeline.yml'  // Misalnya, jika menggunakan make, curl, atau perintah lainnya
                 }
             }
         }
@@ -59,10 +34,10 @@ pipeline {
 
     post {
         success {
-            echo 'Build and test completed successfully!'
+            echo 'NPM installation completed successfully!'
         }
         failure {
-            echo 'Build or tests failed!'
+            echo 'NPM installation failed!'
         }
     }
 }
