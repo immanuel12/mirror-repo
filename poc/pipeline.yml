@@ -31,14 +31,7 @@ steps:
     inputs:
       workingFile: 'poc/.npmrc'
 
-  # Langkah 3: Install dependencies dan build aplikasi
-  # - task: Npm@1
-  #   inputs:
-  #     command: 'install'
-  #     workingDir: 'poc'
-  #     customEndpoint: 'npmconn'
-  #   displayName: 'Npm Install'
-
+  # Langkah 3: Publish NPM Package
   - task: Npm@1
     inputs:
       command: 'publish'
@@ -62,17 +55,18 @@ steps:
       docker run -d -p 3001:3001 --name $(containerName) $(imageRepository):$(tag)
     displayName: 'Run Docker Container on Port 3001'
 
-  # Langkah 6: Kirim permintaan ke webhook Jenkins
-  - task: InvokeRESTAPI@1
+  # Langkah 6: Kirim permintaan ke webhook Jenkins menggunakan PowerShell
+  - task: PowerShell@2
     inputs:
-      serviceConnection: 'Jenkins'  # Ganti dengan service connection jika diperlukan
-      method: 'POST'
-      headers: |
-        Content-Type: application/json
-      url: '$(jenkinsWebhookUrl)'
-      body: |
-        {
-          "status": "success",
-          "message": "Pipeline Azure DevOps telah dijalankan"
-        }
-    displayName: 'Notify Jenkins via Webhook'
+      targetType: 'inline'
+      script: |
+        $url = '$(jenkinsWebhookUrl)'  # Menggunakan variabel untuk URL webhook
+        $body = @{
+          status = "success"
+          message = "Pipeline Azure DevOps telah dijalankan"
+        } | ConvertTo-Json
+
+        # Mengirimkan permintaan POST
+        $response = Invoke-RestMethod -Uri $url -Method Post -Body $body -ContentType 'application/json'
+        Write-Host "Response from Jenkins: $response"
+    displayName: 'Notify Jenkins via PowerShell'
