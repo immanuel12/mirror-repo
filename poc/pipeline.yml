@@ -14,7 +14,8 @@ variables:
   imageRepository: 'nuek21/testing-node'  # Ganti dengan nama repository Docker Hub kamu
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
-  npmServiceConnection: 'npmconn' 
+  npmServiceConnection: 'npmconn'
+  jenkinsWebhookUrl: 'http://<jenkins-server>:8080/generic-webhook-trigger/invoke?token=azure-devops-token'  # Ganti dengan URL webhook Jenkins Anda
 
 steps:
   # Langkah 1: Checkout repository
@@ -60,3 +61,18 @@ steps:
   - script: |
       docker run -d -p 3001:3001 --name $(containerName) $(imageRepository):$(tag)
     displayName: 'Run Docker Container on Port 3001'
+
+  # Langkah 6: Kirim permintaan ke webhook Jenkins
+  - task: InvokeRESTAPI@1
+    inputs:
+      serviceConnection: 'your-service-connection'  # Ganti dengan service connection jika diperlukan
+      method: 'POST'
+      headers: |
+        Content-Type: application/json
+      url: '$(jenkinsWebhookUrl)'
+      body: |
+        {
+          "status": "success",
+          "message": "Pipeline Azure DevOps telah dijalankan"
+        }
+    displayName: 'Notify Jenkins via Webhook'
