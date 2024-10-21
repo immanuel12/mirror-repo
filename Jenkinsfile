@@ -4,28 +4,36 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                // Mengambil source code dari Azure DevOps
+                echo 'Cloning the repository...'
                 git branch: 'main',
                     url: 'https://ImmanuelSianturi@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc'
+                echo 'Repository cloned successfully.'
+            }
+        }
+
+        stage('Check Node and npm Version') {
+            steps {
+                echo 'Checking Node.js and npm versions...'
+                sh 'node --version'
+                sh 'npm --version'
             }
         }
 
         stage('Navigate to poc folder') {
             steps {
-                // Berpindah ke folder poc
+                echo 'Navigating to poc folder...'
                 dir('poc') {
-                    echo 'Navigating to poc folder...'
+                    // Pastikan folder poc ada di dalam repositori
+                    echo 'Inside poc folder.'
                 }
             }
         }
 
         stage('Install npm Dependencies') {
             steps {
-                // Menginstall dependencies Node.js dalam folder poc
                 dir('poc') {
-                    // Cek apakah npm terinstal
-                    sh 'npm --version'
-                    // Menginstal dependencies
+                    echo 'Installing npm dependencies...'
+                    // Menginstal dependencies Node.js dalam folder poc
                     sh 'npm install'
                 }
             }
