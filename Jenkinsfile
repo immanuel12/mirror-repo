@@ -1,49 +1,52 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Checkout from Azure DevOps') {
-            steps {
-                // Mengambil source code dari Azure DevOps
-                git branch: 'main', 
-                    url: 'https://ImmanuelSianturi@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc'
-            }
-        }
-        
-        stage('Install Dependencies') {
-            steps {
-                // Berpindah ke directory 'poc' dan menginstall dependencies Node.js
-                dir('poc') {
-                    sh 'npm install'
-                }
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                // Berpindah ke directory 'poc' dan menjalankan unit tests
-                dir('poc') {
-                    sh 'npm test'
-                }
-            }
-        }
-
-        stage('Build and Run') {
-            steps {
-                // Berpindah ke directory 'poc' dan menjalankan aplikasi Node.js
-                dir('poc') {
-                    sh 'npm start'
-                }
-            }
-        }
+    environment {
+        DOCKER_REGISTRY = 'nuek21/testing-node'
+        CONTAINER_NAME = 'node-app-container'
     }
 
-    post {
-        success {
-            echo 'Build and test completed successfully!'
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git url: 'https://dev.azure.com/ImmanuelSianturi/_git/Project-Poc', branch: 'main'
+            }
         }
-        failure {
-            echo 'Build or tests failed!'
+
+        stage('Install Node.js') {
+            tools {
+                nodejs 'NodeJS_18' // Make sure this is configured in Jenkins
+            }
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Publish to npm') {
+            steps {
+                sh '''
+                    cp /path/to/secret/.npmrc ./poc/.npmrc
+                    cd poc
+                    npm publish
+                '''
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh '''
+                    docker build -t ${DOCKER_REGISTRY}:${BUILD_NUMBER} -f poc/Dockerfile .
+                    docker tag ${DOCKER_REGISTRY}:${BUILD_NUMBER} ${DOCKER_REGISTRY}:latest
+                    docker push ${DOCKER_REGISTRY}:${BUILD_NUMBER}
+                    docker push ${DOCKER_REGISTRY}:latest
+                '''
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                sh 'docker run -d -p 3001:3001 --name ${CONTAINER_NAME} ${DOCKER_REGISTRY}:${BUILD_NUMBER}'
+            }
         }
     }
 }
