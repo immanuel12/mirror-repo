@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout from Azure DevOps') {
+            steps {
+                // Mengambil source code dari Azure DevOps
+                git branch: 'main', 
+                    url: 'https://ImmanuelSianturi@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc',
+            }
+        }
+        
+        stage('Install Dependencies') {
+            steps {
+                // Menginstall dependencies Node.js
+                sh 'npm install'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                // Menjalankan unit tests
+                sh 'npm test'
+            }
+        }
+
+        stage('Build and Run') {
+            steps {
+                // Menjalankan aplikasi Node.js
+                sh 'npm start'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build and test completed successfully!'
+        }
+        failure {
+            echo 'Build or tests failed!'
+        }
+    }
+}
