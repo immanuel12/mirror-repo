@@ -65,7 +65,7 @@ steps:
   # Langkah 6: Kirim permintaan ke webhook Jenkins
   - task: InvokeRESTAPI@1
     inputs:
-      serviceConnection: 'your-service-connection'  # Ganti dengan service connection jika diperlukan
+      serviceConnection: 'Jenkins'  # Ganti dengan service connection jika diperlukan
       method: 'POST'
       headers: |
         Content-Type: application/json
