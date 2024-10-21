@@ -15,7 +15,7 @@ variables:
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
   npmServiceConnection: 'npmconn'
-  jenkinsWebhookUrl: 'http://<jenkins-server>:8080/generic-webhook-trigger/invoke?token=azure-devops-token'  # Ganti dengan URL webhook Jenkins Anda
+  jenkinsWebhookUrl: 'http://103.150.92.227:8080/generic-webhook-trigger/invoke?token=azure-devops-token'  # Ganti dengan URL webhook Jenkins Anda
 
 steps:
   # Langkah 1: Checkout repository
