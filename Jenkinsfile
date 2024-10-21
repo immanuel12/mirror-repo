@@ -12,22 +12,28 @@ pipeline {
         
         stage('Install Dependencies') {
             steps {
-                // Menginstall dependencies Node.js
-                sh 'npm install'
+                // Berpindah ke directory 'poc' dan menginstall dependencies Node.js
+                dir('poc') {
+                    sh 'npm install'
+                }
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Menjalankan unit tests
-                sh 'npm test'
+                // Berpindah ke directory 'poc' dan menjalankan unit tests
+                dir('poc') {
+                    sh 'npm test'
+                }
             }
         }
 
         stage('Build and Run') {
             steps {
-                // Menjalankan aplikasi Node.js
-                sh 'npm start'
+                // Berpindah ke directory 'poc' dan menjalankan aplikasi Node.js
+                dir('poc') {
+                    sh 'npm start'
+                }
             }
         }
     }
