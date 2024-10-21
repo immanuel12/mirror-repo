@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS-18' // Node.js 18, pastikan sudah terinstall di Jenkins
+        nodejs 'NodeJS' // Node.js 18, pastikan sudah terinstall di Jenkins
     }
 
     environment {
