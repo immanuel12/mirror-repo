@@ -14,8 +14,7 @@ variables:
   imageRepository: 'nuek21/testing-node'  # Ganti dengan nama repository Docker Hub kamu
   tag: '$(Build.BuildId)'  # Menggunakan BuildId sebagai tag versi image
   containerName: 'node-app-container'  # Nama container untuk menjalankan aplikasi
-  npmServiceConnection: 'npmconn'
-  jenkinsWebhookUrl: 'http://103.150.92.227:8080/generic-webhook-trigger/invoke?token=azure-devops-token'  # Ganti dengan URL webhook Jenkins Anda
+  npmServiceConnection: 'npmconn' 
 
 steps:
   # Langkah 1: Checkout repository
@@ -31,7 +30,14 @@ steps:
     inputs:
       workingFile: 'poc/.npmrc'
 
-  # Langkah 3: Publish NPM Package
+  # Langkah 3: Install dependencies dan build aplikasi
+  # - task: Npm@1
+  #   inputs:
+  #     command: 'install'
+  #     workingDir: 'poc'
+  #     customEndpoint: 'npmconn'
+  #   displayName: 'Npm Install'
+
   - task: Npm@1
     inputs:
       command: 'publish'
@@ -54,19 +60,3 @@ steps:
   - script: |
       docker run -d -p 3001:3001 --name $(containerName) $(imageRepository):$(tag)
     displayName: 'Run Docker Container on Port 3001'
-
-  # Langkah 6: Kirim permintaan ke webhook Jenkins menggunakan PowerShell
-  - task: PowerShell@2
-    inputs:
-      targetType: 'inline'
-      script: |
-        $url = '$(jenkinsWebhookUrl)'  # Menggunakan variabel untuk URL webhook
-        $body = @{
-          status = "success"
-          message = "Pipeline Azure DevOps telah dijalankan"
-        } | ConvertTo-Json
-
-        # Mengirimkan permintaan POST
-        $response = Invoke-RestMethod -Uri $url -Method Post -Body $body -ContentType 'application/json'
-        Write-Host "Response from Jenkins: $response"
-    displayName: 'Notify Jenkins via PowerShell'
