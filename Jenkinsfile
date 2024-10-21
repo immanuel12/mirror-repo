@@ -2,20 +2,13 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS' // Sesuaikan dengan nama NodeJS yang sudah diinstal di Jenkins
-    }
-
-    environment {
-        DOCKER_CREDENTIALS_ID = 'devops-poc' // Nama service connection ke Docker
-        IMAGE_REPOSITORY = 'nuek21/testing-node'
-        TAG = "${env.BUILD_ID}"
-        CONTAINER_NAME = 'node-app-container'
-        NPM_SERVICE_CONNECTION = 'npmconn' // Nama service connection ke npm registry
+        nodejs 'NodeJS' // Sesuaikan dengan nama Node.js yang dikonfigurasi
     }
 
     stages {
         stage('Clone Repository') {
             steps {
+                // Mengambil source code dari Azure DevOps
                 git branch: 'main',
                     url: 'https://ImmanuelSianturi@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc'
             }
@@ -23,6 +16,7 @@ pipeline {
 
         stage('Navigate to poc folder') {
             steps {
+                // Berpindah ke folder poc
                 dir('poc') {
                     echo 'Navigating to poc folder...'
                 }
@@ -31,42 +25,24 @@ pipeline {
 
         stage('Install npm Dependencies') {
             steps {
+                // Menginstal dependencies Node.js dalam folder poc
                 dir('poc') {
-                    // Cek apakah npm terinstal dan install dependensi
+                    // Cek apakah npm terinstal
                     sh 'npm --version'
+                    // Menginstal dependencies
                     sh 'npm install'
                 }
             }
         }
 
-        stage('Authenticate to npm') {
-            steps {
-                dir('poc') {
-                    // Set registry untuk npm
-                    sh 'npm config set registry https://registry.npmjs.org/'
-                }
-            }
-        }
-
-        stage('Publish to npm') {
-            steps {
-                dir('poc') {
-                    // Membersihkan cache npm untuk menghindari masalah cache
-                    sh 'npm cache clean --force'
-                    // Mencoba untuk publish package
-                    sh 'npm publish'
-                }
-            }
-        }
-
-        stage('Build and Push Docker Image') {
+        stage('Build Docker Image and Push to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKER_CREDENTIALS_ID}") {
-                        def app = docker.build("${env.IMAGE_REPOSITORY}:${env.TAG}", '-f poc/Dockerfile .')
-                        app.push("${env.TAG}")
-                        app.push('latest')
-                    }
+                    // Build dan Push Docker image
+                    sh '''
+                    docker build -t $(imageRepository):$(tag) -f poc/Dockerfile .
+                    docker push $(imageRepository):$(tag)
+                    '''
                 }
             }
         }
@@ -74,7 +50,10 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    sh "docker run -d -p 3001:3001 --name ${env.CONTAINER_NAME} ${env.IMAGE_REPOSITORY}:${env.TAG}"
+                    // Jalankan Docker container pada port 3001
+                    sh '''
+                    docker run -d -p 3001:3001 --name $(containerName) $(imageRepository):$(tag)
+                    '''
                 }
             }
         }
