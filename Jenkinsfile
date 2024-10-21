@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS-18' // Sesuaikan dengan nama yang Anda berikan pada konfigurasi
+        nodejs 'NodeJS' // Sesuaikan dengan nama yang Anda berikan pada konfigurasi
     }
 
     stages {
