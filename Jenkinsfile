@@ -50,7 +50,8 @@ pipeline {
             steps {
                 // Menjalankan file pipeline.yml dalam folder poc
                 dir('poc') {
-                    sh 'az pipelines run --name pipeline.yml' // Contoh menjalankan Azure DevOps Pipeline, sesuaikan perintah jika berbeda
+                    // Sesuaikan perintah ini dengan cara Anda ingin menjalankan pipeline.yml
+                    sh 'pipeline.yml'  // Misalnya, jika menggunakan make, curl, atau perintah lainnya
                 }
             }
         }
