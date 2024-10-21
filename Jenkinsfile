@@ -1,58 +1,68 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'NodeJS' // Sesuaikan dengan nama Node.js yang dikonfigurasi
+    environment {
+        dockerRegistryServiceConnection = 'devops-poc'  // Docker Hub service connection
+        imageRepository = 'nuek21/testing-node'  // Nama repository Docker Hub
+        tag = "${BUILD_ID}"  // Menggunakan BUILD_ID sebagai tag versi image
+        containerName = 'node-app-container'  // Nama container
+        npmServiceConnection = 'npmconn'  // Koneksi NPM
+    }
+
+    triggers {
+        pollSCM('H/5 * * * *')  // Trigger otomatis untuk memeriksa perubahan setiap 5 menit
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout Repository') {
             steps {
-                // Mengambil source code dari Azure DevOps
+                // Langkah 1: Checkout repository dari Azure DevOps
                 git branch: 'main',
                     url: 'https://ImmanuelSianturi@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc'
             }
         }
 
-        stage('Navigate to poc folder') {
+        stage('Install Node.js') {
             steps {
-                // Berpindah ke folder poc
-                dir('poc') {
-                    echo 'Navigating to poc folder...'
-                }
+                // Langkah 2: Install Node.js versi 18
+                tool name: 'NodeJS', type: 'NodeJS'
+                sh 'node --version'
             }
         }
 
-        stage('Install npm Dependencies') {
+        stage('Authenticate NPM') {
             steps {
-                // Menginstal dependencies Node.js dalam folder poc
-                dir('poc') {
-                    // Cek apakah npm terinstal
-                    sh 'npm --version'
-                    // Menginstal dependencies
-                    sh 'npm install'
-                }
+                // Autentikasi ke NPM menggunakan koneksi yang disediakan
+                sh '''
+                echo '//registry.npmjs.org/:_authToken=${npmServiceConnection}' > poc/.npmrc
+                '''
             }
         }
+
+        // Langkah 3: Publish ke NPM dihapus sesuai permintaan
+        // Kamu bisa menambahkan langkah lain sesuai kebutuhan di sini
 
         stage('Build Docker Image and Push to Docker Hub') {
             steps {
                 script {
-                    // Build dan Push Docker image
+                    // Langkah 4: Build Docker image dan push ke Docker Hub
                     sh '''
-                    docker build -t $(imageRepository):$(tag) -f poc/Dockerfile .
-                    docker push $(imageRepository):$(tag)
+                    docker build -t ${imageRepository}:${tag} -f poc/Dockerfile .
+                    docker tag ${imageRepository}:${tag} ${imageRepository}:latest
+                    docker login -u ${dockerRegistryServiceConnection} -p ${DOCKERHUB_PASSWORD}
+                    docker push ${imageRepository}:${tag}
+                    docker push ${imageRepository}:latest
                     '''
                 }
             }
         }
 
-        stage('Run Docker Container') {
+        stage('Run Docker Container on Port 3001') {
             steps {
                 script {
-                    // Jalankan Docker container pada port 3001
+                    // Langkah 5: Jalankan Docker container dengan port 3001
                     sh '''
-                    docker run -d -p 3001:3001 --name $(containerName) $(imageRepository):$(tag)
+                    docker run -d -p 3001:3001 --name ${containerName} ${imageRepository}:${tag}
                     '''
                 }
             }
