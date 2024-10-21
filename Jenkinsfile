@@ -9,25 +9,49 @@ pipeline {
                     url: 'https://ImmanuelSianturi@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc'
             }
         }
-        
+
+        stage('Navigate to poc folder') {
+            steps {
+                // Berpindah ke folder poc
+                dir('poc') {
+                    echo 'Navigating to poc folder...'
+                }
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
-                // Menginstall dependencies Node.js
-                sh 'npm install'
+                // Menginstall dependencies Node.js dalam folder poc
+                dir('poc') {
+                    sh 'npm install'
+                }
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Menjalankan unit tests
-                sh 'npm test'
+                // Menjalankan unit tests dalam folder poc
+                dir('poc') {
+                    sh 'npm test'
+                }
             }
         }
 
         stage('Build and Run') {
             steps {
-                // Menjalankan aplikasi Node.js
-                sh 'npm start'
+                // Menjalankan aplikasi Node.js dalam folder poc
+                dir('poc') {
+                    sh 'npm start'
+                }
+            }
+        }
+
+        stage('Run pipeline.yml') {
+            steps {
+                // Menjalankan file pipeline.yml dalam folder poc
+                dir('poc') {
+                    sh 'az pipelines run --name pipeline.yml' // Contoh menjalankan Azure DevOps Pipeline, sesuaikan perintah jika berbeda
+                }
             }
         }
     }
