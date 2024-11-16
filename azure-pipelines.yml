@@ -42,8 +42,8 @@ stages:
               command: 'test'
               projects: '**/*.csproj'
    
-  - stage: PipelineQualityGate
-    displayName: Quality Gate
+  - stage: PipelineCI
+    displayName: CI
     jobs:            
       - job: CI
         displayName: CI
