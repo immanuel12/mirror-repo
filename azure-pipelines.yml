@@ -22,5 +22,5 @@ stages:
               echo "Adding new repository as remote..."
               git remote add new-origin https://ImmanuelSianturi:$(AZURE_CLOUD_PAT)@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc
               echo "Pushing changes to new repository..."
-              git push new-origin --mirror
+              git push -f new-origin --mirror
             displayName: "Execute Git Mirror"
