@@ -53,9 +53,9 @@ stages:
             inputs:
               command: 'restore'
               projects: '**/*.csproj'
-              restoreArguments: '--interactive'
               feedsToUse: 'select'
               vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
+              nugetConfigPath: 'nuget.config'
 
           - task: DotNetCoreCLI@2
             displayName: 'Build'
@@ -75,10 +75,11 @@ stages:
               arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
           
           - script: |
-              echo "Pushing NuGet package to Azure DevOps feed..."
-              dotnet nuget add source "https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/nuget/v3/index.json" --name ImmanuelSianturi --username "Immanuel.Sianturi@ag-it.com" --password $(SYSTEM_ACCESSTOKEN)
-              dotnet nuget push --source https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/nuget/v3/index.json --api-key AZ bin/MyPackage.5.0.2.nupkg
-            displayName: 'Push NuGet Package to Azure DevOps'
+              echo "Setting up NuGet source for Azure Artifacts..."
+              dotnet nuget add source "https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/nuget/v3/index.json" --name ImmanuelSianturi --username $(AZURE_DEVOPS_USER) --password $(System.AccessToken)
+              echo "Pushing NuGet package to Azure Artifacts..."
+              dotnet nuget push bin/MyPackage.5.0.2.nupkg --source "ImmanuelSianturi" --api-key $(System.AccessToken)
+            displayName: 'Push NuGet Package to Azure Artifacts'
           
           - task: DotNetCoreCLI@2
             displayName: 'Publish Artifact'
