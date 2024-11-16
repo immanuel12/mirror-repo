@@ -49,4 +49,16 @@ namespace HelloWorldApp.Controllers
             return CreatedAtAction(nameof(GetNameEntry), new { id = nameEntry.Id }, nameEntry);
         }
     }
+
+    public class SqlInjectionController : Controller
+    {
+        public IActionResult Index()
+        {
+            SqlInjectionExample example = new SqlInjectionExample();
+            string userInput = "admin'; --";  // Contoh input yang bisa mengakibatkan SQL Injection
+            example.ExecuteQuery(userInput);
+
+            return View();
+        }
+    }
 }
