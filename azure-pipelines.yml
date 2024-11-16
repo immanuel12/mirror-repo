@@ -13,7 +13,7 @@ stages:
         steps:
           - script: |
               echo "Cloning old repository..."
-              git clone --mirror http://vm-azuredevops/DefaultCollection/Project-Poc/_git/Project-Poc
+              git clone --mirror git clone --mirror http://$(AZURE_USERNAME):$(AZURE_PAT)@vm-azuredevops/DefaultCollection/Project-Poc/_git/Project-Poc
               cd Project-Poc.git
               echo "Adding new repository as remote..."
               git remote add new-origin https://$(AZURE_USERNAME_CLOUD):$(AZURE_CLOUD_PAT)@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc
