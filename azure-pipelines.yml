@@ -3,13 +3,14 @@ trigger:
     include:
       - main
 
+pool: 'agentpool'
+
 stages:
   - stage: MirrorRepo
     displayName: Mirror Repository
     jobs:
       - job: MirrorJob
         displayName: Run Git Mirroring
-        pool: 'agentpool'
         steps:
           - script: |
               echo "Cloning old repository..."
@@ -20,3 +21,19 @@ stages:
               echo "Pushing changes to new repository..."
               git push new-origin --mirror
             displayName: "Execute Git Mirror"
+  
+  - stage: UnitTesting
+    displayName: Unit Testing
+    jobs:
+      - job: UnitTesting
+        displayName: Unit Testing
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: 'Run Unit Tests'
+            inputs:
+              command: 'test'
+              projects: 'HelloWorldApp.Tests/HelloWorldApp.Tests.csproj'  # Proyek pengujian
+              arguments: '--configuration Release --collect "Code Coverage" --logger trx'
+              publishTestResults: true
+            
+
