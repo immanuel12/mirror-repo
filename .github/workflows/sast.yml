@@ -55,7 +55,9 @@ jobs:
         dotnet restore ./HelloWorldApp.Tests/HelloWorldApp.Tests.csproj
 
     - name: Build
-      run: dotnet build --configuration Debug --no-restore
+      run: |
+        dotnet build --configuration Release HelloWorldApp/HelloWorldApp.csproj
+        dotnet build --configuration Release HelloWorldApp.Tests/HelloWorldApp.Tests.csproj
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
