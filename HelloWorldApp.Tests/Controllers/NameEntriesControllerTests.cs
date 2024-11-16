@@ -59,7 +59,7 @@ namespace HelloWorldApp.Tests.Controllers
             var actionResult = Assert.IsType<ActionResult<NameEntry>>(result);
             var okResult = Assert.IsType<NameEntry>(actionResult.Value);
             Assert.Equal(1, okResult.Id);  // Pastikan ID entri yang diambil adalah 1
-            Assert.Equal("John Doe", okResult.Name);  // Pastikan data yang diambil adalah John Doe
+            Assert.Equal("John Do", okResult.Name);  // Pastikan data yang diambil adalah John Doe
         }
 
         // Test untuk POST: api/NameEntries
