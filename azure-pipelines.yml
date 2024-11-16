@@ -46,6 +46,6 @@ stages:
             displayName: 'Publish Project'
             inputs:
               command: 'publish'
-              publishWebProjects: true # Change to true if this is a web project
+              publishWebProjects: false # Change to true if this is a web project
               projects: '**/*.csproj'
               arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
