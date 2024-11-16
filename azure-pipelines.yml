@@ -42,6 +42,17 @@ stages:
               command: 'test'
               projects: '**/*.csproj'
           
+      - job: CI
+        displayName: CI
+        steps:
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'build'
+              projects: |
+                HelloWorldApp/HelloWorldApp.csproj
+                HelloWorldApp.Tests/HelloWorldApp.Tests.csproj
+              arguments: '--configuration Release'
+          
           - task: DotNetCoreCLI@2
             displayName: 'Publish Project'
             inputs:
@@ -49,3 +60,10 @@ stages:
               publishWebProjects: false # Change to true if this is a web project
               projects: '**/*.csproj'
               arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
+          
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'push'
+              packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+              nuGetFeedType: 'internal'
+              publishVstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
