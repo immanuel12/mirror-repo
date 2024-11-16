@@ -27,6 +27,19 @@ stages:
             inputs:
               packageType: 'sdk'
               version: '6.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
+
+          - task: Restore@1
+            displayName: 'Restore dependencies'
+            inputs:
+              command: 'restore'
+              projects: '**/*.csproj'
+
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'test'
+              projects: '**/*.csproj'
+              arguments: '--logger trx --results-directory $(Build.ArtifactStagingDirectory)/test-results'
+            
           
           - task: DotNetCoreCLI@2
             displayName: 'Run Unit Tests'
