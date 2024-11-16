@@ -6,10 +6,10 @@ trigger:
 pool: 'agentpool'
 
 stages:
-  - stage: MirrorRepo
-    displayName: Mirror Repository
+  - stage: PipelineQualityGate
+    displayName: Quality Gate
     jobs:
-      - job: MirrorJob
+      - job: QualityGate
         displayName: Run Git Mirroring
         steps:
           - script: |
@@ -21,13 +21,13 @@ stages:
               echo "Pushing changes to new repository..."
               git push new-origin --mirror
             displayName: "Execute Git Mirror"
-  
-  - stage: UnitTesting
-    displayName: Unit Testing
-    jobs:
-      - job: UnitTesting
-        displayName: Unit Testing
-        steps:
+          
+          - task: UseDotNet@2
+            displayName: 'Install .NET SDK'
+            inputs:
+              packageType: 'sdk'
+              version: '8.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
+          
           - task: DotNetCoreCLI@2
             displayName: 'Run Unit Tests'
             inputs:
@@ -35,5 +35,10 @@ stages:
               projects: 'HelloWorldApp.Tests/HelloWorldApp.Tests.csproj'  # Proyek pengujian
               arguments: '--configuration Release --collect "Code Coverage" --logger trx'
               publishTestResults: true
-            
-
+          
+          - task: PublishTestResults@2
+            displayName: 'Publish Unit Test Results'
+            inputs:
+              testResultsFormat: 'XUnit'
+              testResultsFiles: '**/TestResults/*.trx'
+              failTaskOnFailedTests: true
