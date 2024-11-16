@@ -21,13 +21,6 @@ stages:
               echo "Pushing changes to new repository..."
               git push new-origin --mirror
             displayName: "Execute Git Mirror"
-
-          - task: NuGetCommand@2
-            inputs:
-              command: 'restore'
-              restoreSolution: '**/*.sln'
-              feedsToUse: 'select'
-              vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
           
           - task: UseDotNet@2
             displayName: 'Install .NET SDK'
