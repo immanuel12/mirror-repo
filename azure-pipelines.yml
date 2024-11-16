@@ -1,0 +1,22 @@
+trigger: 
+  branches:
+    include:
+      - main
+
+stages:
+  - stage: MirrorRepo
+    displayName: Mirror Repository
+    jobs:
+      - job: MirrorJob
+        displayName: Run Git Mirroring
+        pool: 'agentpool'
+        steps:
+          - script: |
+              echo "Cloning old repository..."
+              git clone --mirror https://$(AZURE_USERNAME):$(AZURE_PAT)@dev.azure.com/DefaultCollection/Project-Poc/_git/Project-Poc
+              cd Project-Poc.git
+              echo "Adding new repository as remote..."
+              git remote add new-origin https://$(AZURE_USERNAME_CLOUD):$(AZURE_CLOUD_PAT)@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc
+              echo "Pushing changes to new repository..."
+              git push new-origin --mirror
+            displayName: "Execute Git Mirror"
