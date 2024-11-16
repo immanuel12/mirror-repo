@@ -28,14 +28,6 @@ stages:
               packageType: 'sdk'
               version: '8.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
 
-          - script: |
-              echo "Adding package references to .csproj..."
-              cd ./HelloWorldApp
-              # Menambahkan PackageReference untuk Microsoft.EntityFrameworkCore.SqlServer dan Microsoft.EntityFrameworkCore.Tools
-              dotnet add ./*.csproj package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.0
-              dotnet add ./*.csproj package Microsoft.EntityFrameworkCore.Tools --version 8.0.0
-            displayName: "Add Package References"
-
           - task: DotNetCoreCLI@2
             displayName: 'Restore'
             inputs:
