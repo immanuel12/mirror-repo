@@ -74,6 +74,11 @@ stages:
               projects: '**/*.csproj'
               arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
           
+          - script: |
+              echo "Pushing NuGet package to Azure DevOps feed..."
+              dotnet nuget push $(Build.ArtifactStagingDirectory)/*.nupkg --source "https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/nuget/v3/index.json" --api-key $(System.AccessToken)
+            displayName: 'Push NuGet Package to Azure DevOps'
+          
           - task: DotNetCoreCLI@2
             displayName: 'Publish Artifact'
             inputs:
