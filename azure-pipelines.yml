@@ -9,7 +9,6 @@ steps:
   - task: mirror-git-repository-vsts-task@1
     inputs:
       sourceGitRepositoryUri: '$(Build.Repository.Uri)'
-      sourceGitRepositoryPersonalAccessToken: 'BVzN563cicUtBItV1kfPP7sGg7LCVwZ5Bi5lOGMRbLahlEigHyThJQQJ99AKACAAAAAnT0hSAAASAZDOl7bq'
-      sourceGitRepositoryCloneDirectoryName: 'https://ImmanuelSianturi@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc'
+      sourceGitRepositoryPersonalAccessToken: '$(PATAZURE)'
       destinationGitRepositoryUri: 'https://github.com/immanuel12/mirror-repo.git'
-      destinationGitRepositoryPersonalAccessToken: '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'
+      destinationGitRepositoryPersonalAccessToken: '$(PATGITHUB)'
