@@ -9,7 +9,7 @@ stages:
     jobs:
       - job: MirrorJob
         displayName: Run Git Mirroring
-        pool: 'agentpool'
+        pool: 'Default'
         steps:
           - script: |
               echo "Cloning old repository..."
