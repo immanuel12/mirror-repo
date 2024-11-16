@@ -1,14 +1,19 @@
-trigger:
-  branches:
-    include:
-      - main
+trigger: none
 
-pool: 'agentpool'
-
-steps:
-  - task: mirror-git-repository-vsts-task@1
-    inputs:
-      sourceGitRepositoryUri: '$(Build.Repository.Uri)'
-      sourceGitRepositoryPersonalAccessToken: '$(PATAZURE)'
-      destinationGitRepositoryUri: 'https://github.com/immanuel12/mirror-repo.git'
-      destinationGitRepositoryPersonalAccessToken: '$(PATGITHUB)'
+stages:
+  - stage: MirrorRepo
+    displayName: Mirror Repository
+    jobs:
+      - job: MirrorJob
+        displayName: Run Git Mirroring
+        pool: 'agentpool'
+        steps:
+          - script: |
+              echo "Cloning old repository..."
+              git clone --mirror https://ImmanuelSianturi@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc
+              cd Project-Poc.git
+              echo "Adding new repository as remote..."
+              git remote add new-origin https://github.com/immanuel12/mirror-repo.git
+              echo "Pushing changes to new repository..."
+              git push new-origin --mirror
+            displayName: "Execute Git Mirror"
