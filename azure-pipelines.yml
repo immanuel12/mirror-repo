@@ -13,7 +13,7 @@ stages:
         steps:
           - script: |
               echo "Cloning old repository..."
-              git clone --mirror https://$(GITHUB_USERNAME):$(GITHUB_PAT)@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc
+              git clone --mirror https://$(AZURE_USERNAME):$(AZURE_PAT)@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc
               cd Project-Poc.git
               echo "Adding new repository as remote..."
               git remote add new-origin https://immanuel12:$(GITHUB_PAT)@github.com/immanuel12/mirror-repo.git
