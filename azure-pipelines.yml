@@ -13,7 +13,7 @@ stages:
         steps:
           - script: |
               echo "Cloning old repository..."
-              git clone --mirror https://$(AZURE_USERNAME):$(AZURE_PAT)@dev.azure.com/DefaultCollection/Project-Poc/_git/Project-Poc
+              git clone --mirror http://13.67.63.188/DefaultCollection/Project-Poc/_git/Project-Poc
               cd Project-Poc.git
               echo "Checking current remotes..."
               git remote -v
@@ -22,5 +22,5 @@ stages:
               echo "Adding new repository as remote..."
               git remote add new-origin https://ImmanuelSianturi:$(AZURE_CLOUD_PAT)@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc
               echo "Pushing changes to new repository..."
-              git push new-origin1 --mirror
+              git push new-origin --mirror
             displayName: "Execute Git Mirror"
