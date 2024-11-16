@@ -2,9 +2,11 @@ name: CodeQL SAST
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   analyze:
@@ -14,10 +16,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x' # Sesuaikan dengan versi .NET proyek Anda
+
+      - name: Install dependencies
+        run: |
+          dotnet restore /**/*.csproj
+
+      - name: Build the code
+        run: |
+          dotnet build /HelloWorldApp/HelloWorldApp.csproj --configuration Release
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
-          languages: 'csharp'
+          languages:
+            - csharp
 
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v2
