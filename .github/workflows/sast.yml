@@ -51,7 +51,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        dotnet restore /**/*.csproj
+        dotnet restore **/*.csproj
 
     - name: Build
       run: dotnet build --configuration Debug --no-restore
