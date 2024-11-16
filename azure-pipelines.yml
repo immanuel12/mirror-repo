@@ -1,76 +1,15 @@
-pr:
+trigger:
   branches:
     include:
       - main
 
-pool: agentpool  # Gunakan 'windows-latest' sebagai pool agent
+pool:
+  vmImage: 'agentpool'
 
 steps:
-# Step 1: Install .NET SDK
-- task: UseDotNet@2
-  displayName: 'Install .NET SDK'
-  inputs:
-    packageType: 'sdk'
-    version: '8.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
-
-# Step 2: Restore Dependencies
-- task: DotNetCoreCLI@2
-  displayName: 'Restore Dependencies'
-  inputs:
-    command: 'restore'
-    projects: '**/*.csproj'  # Mencakup semua file .csproj di seluruh subfolder
-
-# Step 3: Build the Project
-- task: DotNetCoreCLI@2
-  displayName: 'Build Project'
-  inputs:
-    command: 'build'
-    projects: 'HelloWorldApp/HelloWorldApp.csproj'  # Proyek utama
-    arguments: '--configuration Release'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Build Test Project'
-  inputs:
-    command: 'build'
-    projects: 'HelloWorldApp.Tests/HelloWorldApp.Tests.csproj'  # Proyek pengujian
-    arguments: '--configuration Release'
-
-# Step 4: Run Unit Tests with Code Coverage
-- task: DotNetCoreCLI@2
-  displayName: 'Run Unit Tests'
-  inputs:
-    command: 'test'
-    projects: 'HelloWorldApp.Tests/HelloWorldApp.Tests.csproj'  # Proyek pengujian
-    arguments: '--configuration Release --collect "Code Coverage" --logger trx'
-    publishTestResults: true
-
-# Step 5: Publish Unit Test Results
-- task: PublishTestResults@2
-  displayName: 'Publish Unit Test Results'
-  inputs:
-    testResultsFormat: 'XUnit'
-    testResultsFiles: '**/TestResults/*.trx'
-    failTaskOnFailedTests: true
-
-# Step 6: Publish Code Coverage Report
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish Code Coverage Report'
-  inputs:
-    codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.cobertura.xml'
-    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage/'
-
-# Optional: Publish Quality Report (if using a report generator)
-# - task: CopyFiles@2
-#   displayName: 'Copy Quality Report Files'
-#   inputs:
-#     SourceFolder: '$(Build.SourcesDirectory)/TestResults'
-#     Contents: '**'
-#     TargetFolder: '$(Build.ArtifactStagingDirectory)/QualityReport'
-
-# - task: PublishBuildArtifacts@1
-  displayName: 'Publish Quality Report Artifact'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/QualityReport'
-    ArtifactName: 'QualityReport'
-    publishLocation: 'Container'
+  - script: |
+      https://ImmanuelSianturi@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc
+      cd Project-Poc.git
+      git push
+      git push --mirror https://github.com/immanuel12/mirror-repo.git
+    displayName: 'Sync Main Repo to Mirror Repo'
