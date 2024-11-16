@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework> <!-- Gunakan net6.0 untuk aplikasi utama -->
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Referensi dependensi yang diperlukan oleh aplikasi utama -->
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HelloWorldApp.Tests\HelloWorldApp.Tests.csproj" />
+  </ItemGroup>
+
+</Project>

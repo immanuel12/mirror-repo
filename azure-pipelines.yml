@@ -27,14 +27,6 @@ stages:
             inputs:
               packageType: 'sdk'
               version: '6.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
-              installationPath: $(Agent.ToolsDirectory)/dotnet
-
-          - task: DotNetCoreCLI@2
-            displayName: 'Restore Dependencies'
-            inputs:
-              command: 'restore'
-              projects: '**/*.csproj'
-
           
           - task: DotNetCoreCLI@2
             displayName: 'Run Unit Tests'
