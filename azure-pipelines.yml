@@ -26,7 +26,7 @@ stages:
             displayName: 'Install .NET SDK'
             inputs:
               packageType: 'sdk'
-              version: '7.0.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
+              version: '8.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
 
           - task: DotNetCoreCLI@2
             inputs:
