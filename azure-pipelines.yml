@@ -28,8 +28,8 @@ stages:
               packageType: 'sdk'
               version: '6.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
 
-          - task: Restore@1
-            displayName: 'Restore dependencies'
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore Dependencies'
             inputs:
               command: 'restore'
               projects: '**/*.csproj'
