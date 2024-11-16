@@ -34,12 +34,6 @@ stages:
               command: 'restore'
               projects: '**/*.csproj'
 
-          - task: DotNetCoreCLI@2
-            inputs:
-              command: 'test'
-              projects: '**/*.csproj'
-              arguments: '--logger trx --results-directory $(Build.ArtifactStagingDirectory)/test-results'
-            
           
           - task: DotNetCoreCLI@2
             displayName: 'Run Unit Tests'
