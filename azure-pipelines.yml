@@ -26,7 +26,14 @@ stages:
             displayName: 'Install .NET SDK'
             inputs:
               packageType: 'sdk'
-              version: '6.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
+              version: '8.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
+
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'restore'
+              projects: '**/*.csproj'
+              feedsToUse: 'select'
+              vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
           
           - task: DotNetCoreCLI@2
             displayName: 'Run Unit Tests'
