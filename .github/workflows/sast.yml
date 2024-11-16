@@ -1,46 +1,23 @@
----
-########################
-########################
-## SAST GitHub Action ##
-########################
-########################
-name: SAST
+name: CodeQL SAST
 
-#######################################
-# Start the job on all push to master #
-#######################################
 on:
   push:
+    branches: [main]
   pull_request:
-    branches: ['main']
+    branches: [main]
 
-###############
-# Set the Job #
-###############
 jobs:
-  build:
-    # Name the Job
-    name: SAST
-
-    # Set the agent to run on
+  analyze:
+    name: Analyze code
     runs-on: ubuntu-latest
-
-    ##################
-    # Load all steps #
-    ##################
     steps:
-      ##########################
-      # Checkout the code base #
-      ##########################
-      - name: Checkout Code
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      #####################
-      # Run Deploy script #
-      #####################
-      - name: Run SAST check
-        uses: IvanKuchin/SAST@v1
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
         with:
-          GITHUB_TOKEN: ${{ github.token }}
-        env:
-          LOG_VERBOSE: true
+          languages: ['csharp']
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v2
