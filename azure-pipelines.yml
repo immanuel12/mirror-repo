@@ -76,7 +76,7 @@ stages:
           
           - script: |
               echo "Pushing NuGet package to Azure DevOps feed..."
-              dotnet nuget push $(Build.ArtifactStagingDirectory)/*.nupkg --source "https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/nuget/v3/index.json" --api-key $(SYSTEM_ACCESSTOKEN)
+              dotnet nuget push $(Build.ArtifactStagingDirectory)/*.nupkg --source "https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/nuget/v3/index.json" --api-key az
             displayName: 'Push NuGet Package to Azure DevOps'
           
           - task: DotNetCoreCLI@2
