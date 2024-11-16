@@ -13,7 +13,7 @@ stages:
         steps:
           - script: |
               echo "Cloning old repository..."
-              git clone --mirror http://13.67.63.188/DefaultCollection/Project-Poc/_git/Project-Poc
+              git clone --mirror http://localhost/DefaultCollection/Project-Poc/_git/Project-Poc
               cd Project-Poc.git
               echo "Checking current remotes..."
               git remote -v
