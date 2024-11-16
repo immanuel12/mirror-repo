@@ -11,7 +11,7 @@ namespace HelloWorldApp
 
         public static string GetGreeting()
         {
-            return "Hello, Immanuel Sianturi";
+            return "Hello, Immanuel Sianturi Apa Kabar?";
         }
     }
 }
