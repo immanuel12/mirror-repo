@@ -41,12 +41,12 @@ stages:
             inputs:
               command: 'test'
               projects: 'HelloWorldApp.Tests/HelloWorldApp.Tests.csproj'  # Proyek pengujian
-              arguments: '--configuration Release --collect "Code Coverage" --logger trx'
+              arguments: '--configuration Release --logger "trx;LogFileName=TestResults.trx" --results-directory $(System.DefaultWorkingDirectory)/TestResults --collect "Code Coverage"'
               publishTestResults: true
-          
+            
           - task: PublishTestResults@2
             displayName: 'Publish Unit Test Results'
             inputs:
               testResultsFormat: 'XUnit'
-              testResultsFiles: '**/TestResults/*.trx'
+              testResultsFiles: '$(System.DefaultWorkingDirectory)/TestResults/*.trx'
               failTaskOnFailedTests: true
