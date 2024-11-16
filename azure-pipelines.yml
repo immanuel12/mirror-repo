@@ -78,7 +78,7 @@ stages:
               echo "Setting up NuGet source for Azure Artifacts..."
               dotnet nuget add source "https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/nuget/v3/index.json" --name ImmanuelSianturi --username ImmanuelSianturi --password F4zxh4YSUUpWaYY00pch3KZ8Z0ZkRxoMkDtl5oS9oah6l2L9HT0SJQQJ99AKACAAAAAnT0hSAAASAZDORsjz
               echo "Pushing NuGet package to Azure Artifacts..."
-              dotnet nuget push bin/MyPackage.5.0.2.nupkg --source "ImmanuelSianturi" --api-key $(System.AccessToken)
+              dotnet nuget push --source "ImmanuelSianturi" --api-key az F4zxh4YSUUpWaYY00pch3KZ8Z0ZkRxoMkDtl5oS9oah6l2L9HT0SJQQJ99AKACAAAAAnT0hSAAASAZDORsjz
             displayName: 'Push NuGet Package to Azure Artifacts'
           
           - task: DotNetCoreCLI@2
