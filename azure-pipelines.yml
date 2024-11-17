@@ -103,38 +103,38 @@ stages:
           #       HelloWorldApp.Tests/nuget.config
           #     arguments: '--api-key $(azure_pat)'
   
-  # - stage: PipelineCD
-  #   displayName: CD
-  #   jobs:            
-  #     - job: CD
-  #       displayName: CD
-  #       steps:
-  #         - task: TerraformCLI@2
-  #           displayName: 'Terraform Init'
-  #           inputs:
-  #             command: 'init'
-  #             backendType: 'azurerm'
-  #             backendServiceArm: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
-  #             backendAzureRmTenantId: '28c4ac60-7fdf-4ab1-b3fc-8abb83bdb75b'
-  #             backendAzureRmSubscriptionId: '040f3cb8-8dca-4775-b127-da8ea12c4f54'
-  #             backendAzureRmResourceGroupName: 'rg-agent'
-  #             backendAzureRmStorageAccountName: 'stpocdevsecops'
-  #             backendAzureRmContainerName: 'tfstate'
-  #             backendAzureRmKey: 'tf/terraform.tfstate'
-  #             allowTelemetryCollection: true
+  - stage: PipelineCD
+    displayName: CD
+    jobs:            
+      - job: CD
+        displayName: CD
+        steps:
+          - task: TerraformCLI@2
+            displayName: 'Terraform Init'
+            inputs:
+              command: 'init'
+              backendType: 'azurerm'
+              backendServiceArm: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
+              backendAzureRmTenantId: '28c4ac60-7fdf-4ab1-b3fc-8abb83bdb75b'
+              backendAzureRmSubscriptionId: '040f3cb8-8dca-4775-b127-da8ea12c4f54'
+              backendAzureRmResourceGroupName: 'rg-agent'
+              backendAzureRmStorageAccountName: 'stpocdevsecops'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: 'tf/terraform.tfstate'
+              allowTelemetryCollection: true
           
-  #         - task: TerraformCLI@2
-  #           displayName: 'Terraform Plan'
-  #           inputs:
-  #             command: 'plan'
-  #             environmentServiceName: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
-  #             providerAzureRmSubscriptionId: '040f3cb8-8dca-4775-b127-da8ea12c4f54'
-  #             allowTelemetryCollection: true
+          - task: TerraformCLI@2
+            displayName: 'Terraform Plan'
+            inputs:
+              command: 'plan'
+              environmentServiceName: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
+              providerAzureRmSubscriptionId: '040f3cb8-8dca-4775-b127-da8ea12c4f54'
+              allowTelemetryCollection: true
 
-  #         - task: TerraformCLI@2
-  #           displayName: 'Terraform Apply'
-  #           inputs:
-  #             command: 'apply'
-  #             environmentServiceName: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
-  #             providerAzureRmSubscriptionId: '040f3cb8-8dca-4775-b127-da8ea12c4f54'
-  #             allowTelemetryCollection: true
+          - task: TerraformCLI@2
+            displayName: 'Terraform Apply'
+            inputs:
+              command: 'apply'
+              environmentServiceName: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
+              providerAzureRmSubscriptionId: '040f3cb8-8dca-4775-b127-da8ea12c4f54'
+              allowTelemetryCollection: true
