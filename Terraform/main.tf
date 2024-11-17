@@ -12,5 +12,5 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "rg" {
   location = var.location
-  name     = "rg-${var.project_name}-${var.environment}"
+  name     = "rg-${var.project_name}"
 }
