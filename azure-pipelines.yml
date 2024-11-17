@@ -61,9 +61,9 @@ stages:
               projects: '**/*.csproj'
               feedsToUse: 'select'
               vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
-              nugetConfigPath: |
-                HelloWorldApp/nuget.config
-                HelloWorldApp.Tests/nuget.config
+              # nugetConfigPath: |
+              #   HelloWorldApp/nuget.config
+              #   HelloWorldApp.Tests/nuget.config
 
           - task: DotNetCoreCLI@2
             displayName: 'Build'
@@ -89,16 +89,16 @@ stages:
               projects: '**/*.csproj'
               arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
           
-          - task: DotNetCoreCLI@2
-            displayName: 'Publish Artifact'
-            inputs:
-              command: 'push'
-              packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-              nuGetFeedType: 'internal'
-              publishVstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
-              feedsToUse: 'select'
-              vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
-              nugetConfigPath: |
-                HelloWorldApp/nuget.config
-                HelloWorldApp.Tests/nuget.config
-              arguments: '--api-key $(azure_pat)'
+          # - task: DotNetCoreCLI@2
+          #   displayName: 'Publish Artifact'
+          #   inputs:
+          #     command: 'push'
+          #     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+          #     nuGetFeedType: 'internal'
+          #     publishVstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
+          #     feedsToUse: 'select'
+          #     vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
+          #     nugetConfigPath: |
+          #       HelloWorldApp/nuget.config
+          #       HelloWorldApp.Tests/nuget.config
+          #     arguments: '--api-key $(azure_pat)'
