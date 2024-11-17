@@ -101,4 +101,4 @@ stages:
               nugetConfigPath: |
                 HelloWorldApp/nuget.config
                 HelloWorldApp.Tests/nuget.config
-              arguments: '--api-key $(MyNuGetApiKey)'
+              arguments: '--api-key $(azure_pat)'
