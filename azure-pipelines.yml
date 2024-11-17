@@ -5,6 +5,9 @@ trigger:
 
 pool: 'agentpool'
 
+variables:
+  system.debug: true
+
 stages:
   - stage: PipelineQualityGate
     displayName: Quality Gate
@@ -55,7 +58,9 @@ stages:
               projects: '**/*.csproj'
               feedsToUse: 'select'
               vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
-              nugetConfigPath: 'nuget.config'
+              nugetConfigPath: |
+                HelloWorldApp/nuget.config
+                HelloWorldApp.Tests/nuget.config
 
           - task: DotNetCoreCLI@2
             displayName: 'Build'
