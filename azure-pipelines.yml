@@ -109,11 +109,11 @@ stages:
       - job: CD
         displayName: CD
         steps:
-          - task: UseTerraformCLI@1
-            displayName: 'Install Terraform CLI'
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+            displayName: "Terraform Installer"
             inputs:
-              terraformVersion: 'latest'
-              
+              terraformVersion: latest
+
           - task: TerraformCLI@2
             displayName: 'Terraform Init'
             inputs:
