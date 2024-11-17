@@ -93,3 +93,8 @@ stages:
               packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
               nuGetFeedType: 'internal'
               publishVstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
+              feedsToUse: 'select'
+              vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
+              nugetConfigPath: |
+                HelloWorldApp/nuget.config
+                HelloWorldApp.Tests/nuget.config
