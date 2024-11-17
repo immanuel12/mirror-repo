@@ -109,6 +109,11 @@ stages:
       - job: CD
         displayName: CD
         steps:
+          - task: UseTerraformCLI@1
+            displayName: 'Install Terraform CLI'
+            inputs:
+              terraformVersion: 'latest'
+              
           - task: TerraformCLI@2
             displayName: 'Terraform Init'
             inputs:
