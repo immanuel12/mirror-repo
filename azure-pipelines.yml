@@ -5,6 +5,11 @@ trigger:
 
 pool: 'agentpool'
 
+
+parameters:
+  - name: Directory
+    type: string
+    default: Terraform
 # variables:
 #   system.debug: true
 
@@ -121,6 +126,7 @@ stages:
             inputs:
               command: 'init'
               backendType: 'azurerm'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.Directory }}'
               backendServiceArm: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
               backendAzureRmTenantId: '28c4ac60-7fdf-4ab1-b3fc-8abb83bdb75b'
               backendAzureRmSubscriptionId: '040f3cb8-8dca-4775-b127-da8ea12c4f54'
