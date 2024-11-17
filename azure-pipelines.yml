@@ -140,6 +140,7 @@ stages:
             displayName: 'Terraform Plan'
             inputs:
               command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.Directory }}'
               environmentServiceName: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
               providerAzureRmSubscriptionId: '040f3cb8-8dca-4775-b127-da8ea12c4f54'
               allowTelemetryCollection: true
@@ -148,6 +149,7 @@ stages:
             displayName: 'Terraform Apply'
             inputs:
               command: 'apply'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.Directory }}'
               environmentServiceName: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
               providerAzureRmSubscriptionId: '040f3cb8-8dca-4775-b127-da8ea12c4f54'
               allowTelemetryCollection: true
