@@ -101,3 +101,4 @@ stages:
               nugetConfigPath: |
                 HelloWorldApp/nuget.config
                 HelloWorldApp.Tests/nuget.config
+              arguments: '--api-key $(TOKEN)'
