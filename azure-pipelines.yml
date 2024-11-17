@@ -83,7 +83,7 @@ stages:
           
           - script: |
               echo "Setting up NuGet source for Azure Artifacts..."
-              dotnet nuget push --source "ImmanuelSianturi" --api-key az HelloWorldApp.1.0.0.nupkg
+              dotnet nuget push "$(Build.ArtifactStagingDirectory)/*.nupkg" --source "https://pkgs.dev.azure.com/ImmanuelSianturi/_packaging/ImmanuelSianturi/nuget/v3/index.json" --api-key az HelloWorldApp.1.0.0.nupkg
             displayName: 'Push NuGet Package to Azure Artifacts'
           
           - task: DotNetCoreCLI@2
