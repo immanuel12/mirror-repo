@@ -51,6 +51,9 @@ stages:
       - job: CI
         displayName: CI
         steps:
+          - task: NuGetAuthenticate@1
+            displayName: 'NuGet Authenticate'
+
           - task: DotNetCoreCLI@2
             displayName: 'Restore'
             inputs:
