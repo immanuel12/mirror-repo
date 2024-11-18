@@ -52,12 +52,7 @@ stages:
               projects: '**/*.csproj'
               arguments: '--configuration Release'
 
-          - task: DotNetCoreCLI@2
-            displayName: 'Build Solution'
-            inputs:
-              command: 'build'
-              projects: '**/*.sln'
-              arguments: '--configuration Release'
+          
 
           - task: DotNetCoreCLI@2
             displayName: 'Run Unit Tests'
