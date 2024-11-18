@@ -34,7 +34,7 @@ stages:
             displayName: 'Setup .NET'
             inputs:
               packageType: 'sdk'
-              version: $(dotnetVersion)
+              version: '8.x'
 
           # Install dependencies
           - script: |
