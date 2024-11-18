@@ -57,8 +57,8 @@ stages:
               SonarCloud: 'sonarcloud'
               organization: 'immanuel12'
               scannerMode: 'dotnet'
-              projectKey: 'sonar.projectKey'
-              projectName: 'sonar.projectName'
+              projectKey: 'ImmanuelSianturi_Project-Poc'
+              projectName: 'Project-Poc'
           
           - task: SonarCloudAnalyze@3
             displayName: 'Sonar Run Analys'
