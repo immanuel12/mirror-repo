@@ -37,13 +37,13 @@ stages:
               packageType: 'sdk'
               version: '8.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
 
-          - task: DotNetCoreCLI@2
-            displayName: 'Restore'
-            inputs:
-              command: 'restore'
-              projects: '**/*.csproj'
-              feedsToUse: 'select'
-              vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
+          # - task: DotNetCoreCLI@2
+          #   displayName: 'Restore'
+          #   inputs:
+          #     command: 'restore'
+          #     projects: '**/*.csproj'
+          #     feedsToUse: 'select'
+          #     vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
           
           - task: DotNetCoreCLI@2
             displayName: 'Restore'
@@ -53,12 +53,12 @@ stages:
               feedsToUse: 'select'
               vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
 
-          - task: DotNetCoreCLI@2
-            displayName: 'Build Project'
-            inputs:
-              command: 'build'
-              projects: '**/*.csproj'
-              arguments: '--configuration Release'
+          # - task: DotNetCoreCLI@2
+          #   displayName: 'Build Project'
+          #   inputs:
+          #     command: 'build'
+          #     projects: '**/*.csproj'
+          #     arguments: '--configuration Release'
           
           - task: DotNetCoreCLI@2
             displayName: 'Build Project'
@@ -67,11 +67,11 @@ stages:
               projects: '**/*.sln'
               arguments: '--configuration Release'
 
-          - task: DotNetCoreCLI@2
-            displayName: 'Run Unit Tests'
-            inputs:
-              command: 'test'
-              projects: '**/*.csproj'
+          # - task: DotNetCoreCLI@2
+          #   displayName: 'Run Unit Tests'
+          #   inputs:
+          #     command: 'test'
+          #     projects: '**/*.csproj'
 
           - task: DotNetCoreCLI@2
             displayName: 'Run Unit Tests'
@@ -84,7 +84,7 @@ stages:
             inputs:
               SonarCloud: 'sonarcloud'
               organization: 'immanuel12'
-              scannerMode: 'MSBuild'
+              scannerMode: 'dotnet'
               projectKey: 'ImmanuelSianturi_Project-Poc'
               projectName: 'Project-Poc'
           
