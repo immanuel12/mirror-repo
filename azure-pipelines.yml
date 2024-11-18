@@ -41,9 +41,15 @@ stages:
             displayName: 'Restore'
             inputs:
               command: 'restore'
-              projects: |
-                '**/*.csproj'
-                '**/*.sln'
+              projects: '**/*.csproj'
+              feedsToUse: 'select'
+              vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
+          
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore'
+            inputs:
+              command: 'restore'
+              projects: '**/*.sln'
               feedsToUse: 'select'
               vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
 
@@ -51,18 +57,27 @@ stages:
             displayName: 'Build Project'
             inputs:
               command: 'build'
-              projects: |
-                '**/*.csproj'
-                '**/*.sln'
+              projects: '**/*.csproj'
+              arguments: '--configuration Release'
+          
+          - task: DotNetCoreCLI@2
+            displayName: 'Build Project'
+            inputs:
+              command: 'build'
+              projects: '**/*.sln'
               arguments: '--configuration Release'
 
           - task: DotNetCoreCLI@2
             displayName: 'Run Unit Tests'
             inputs:
               command: 'test'
-              projects: |
-                '**/*.csproj'
-                '**/*.sln'
+              projects: '**/*.csproj'
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Run Unit Tests'
+            inputs:
+              command: 'test'
+              projects: '**/*.sln'
           
           - task: SonarCloudPrepare@3
             displayName: 'Sonar Prepare'
