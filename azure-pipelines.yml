@@ -91,7 +91,7 @@ stages:
           - task: SonarCloudAnalyze@3
             displayName: 'Sonar Run Analys'
             inputs:
-              jdkversion: 'JAVA_HOME_17_X64'
+              jdkversion: 'JAVA_HOME_21_X64'
 
           - task: SonarCloudPublish@3
             displayName: 'Sonar Publish'
