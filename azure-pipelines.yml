@@ -84,7 +84,7 @@ stages:
             inputs:
               SonarCloud: 'sonarcloud'
               organization: 'immanuel12'
-              scannerMode: 'dotnet'
+              scannerMode: 'MSBuild'
               projectKey: 'ImmanuelSianturi_Project-Poc'
               projectName: 'Project-Poc'
           
