@@ -24,11 +24,10 @@ stages:
         steps:
           # Install CodeQL CLI
           - script: |
-              echo "Mengunduh CodeQL CLI..."
-              curl -sL -o codeql.tar.gz https://github.com/github/codeql-cli-binaries/releases/download/v2.14.0/codeql-linux64.tar.gz
-              tar -xzf codeql.tar.gz
-              mkdir -p $HOME/codeql  # Membuat direktori di HOME pengguna
-              mv codeql $HOME/codeql
+              curl -sSL https://github.com/github/codeql-cli-binaries/releases/download/v2.12.5/codeql-linux64.zip -o codeql.zip
+              unzip codeql.zip -d /usr/local/codeql
+              mkdir -p $(Build.ArtifactStagingDirectory)/codeql
+              export $(Build.ArtifactStagingDirectory)/codeql
             displayName: 'Install CodeQL CLI'
 
           # Setup .NET environment
