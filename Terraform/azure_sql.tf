@@ -19,7 +19,7 @@ resource "azurerm_mssql_database" "db_dev" {
   max_size_gb    = 256
   read_scale     = false
   min_capacity   = 1
-  sku_name       = "GP_S_Gen5_4"
+  sku_name       = "GP_S_Gen5_2"
   zone_redundant = false
   storage_account_type = "Local"
   auto_pause_delay_in_minutes = -1

@@ -1,5 +1,5 @@
 resource "azurerm_app_service_plan" "example" {
-  name                = "example-appserviceplan"
+  name                = "appserviceplan-${var.project_name}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -10,7 +10,7 @@ resource "azurerm_app_service_plan" "example" {
 }
 
 resource "azurerm_app_service" "example" {
-  name                = "example-app-service"
+  name                = "app-service-${var.project_name}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   app_service_plan_id = azurerm_app_service_plan.example.id
@@ -27,6 +27,6 @@ resource "azurerm_app_service" "example" {
   connection_string {
     name  = "Database"
     type  = "SQLServer"
-    value = "Server=some-server.mydomain.com;Integrated Security=SSPI"
+    value = "Server=sql-devsecops.database.windows.net;Database=db-devsecops;User ID=sqladmin;Password=P@ssw0rd123!;Encrypt=true;TrustServerCertificate=false;Connection Timeout=30;"
   }
 }
