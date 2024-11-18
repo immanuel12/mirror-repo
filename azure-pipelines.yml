@@ -136,6 +136,7 @@ stages:
               backendAzureRmStorageAccountName: 'stpocdevsecops'
               backendAzureRmContainerName: 'tfstate'
               backendAzureRmKey: 'tf/terraform.tfstate'
+              backendAzureRmStorageAccountSku: 'Standard_LRS'
               allowTelemetryCollection: true
           
           - task: TerraformCLI@2
