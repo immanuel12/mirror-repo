@@ -51,6 +51,11 @@ stages:
               command: 'test'
               projects: '**/*.csproj'
           
+          - task: VSBuild@1
+            inputs:
+              solution: '**/*.sln'
+              msbuildArgs: '/t:Rebuild /p:Configuration=Release'
+          
           - task: SonarCloudPrepare@3
             displayName: 'Sonar Prepare'
             inputs:
