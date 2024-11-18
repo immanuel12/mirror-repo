@@ -20,6 +20,53 @@ stages:
       - job: QualityGate
         displayName: QualityGate
         steps:
+          
+          - task: Checkout@1
+            displayName: 'Checkout repository'
+
+          # Install CodeQL CLI
+          - script: |
+              curl -sSL https://github.com/github/codeql-cli-binaries/releases/download/v2.12.5/codeql-linux64.zip -o codeql.zip
+              unzip codeql.zip -d /usr/local/codeql
+              export PATH=$PATH:/usr/local/codeql/codeql
+            displayName: 'Install CodeQL CLI'
+
+          # Setup .NET environment
+          - task: UseDotNet@2
+            displayName: 'Setup .NET'
+            inputs:
+              packageType: 'sdk'
+              version: $(dotnetVersion)
+
+          # Install dependencies
+          - script: |
+              dotnet restore ./HelloWorldApp/HelloWorldApp.csproj
+              dotnet restore ./HelloWorldApp.Tests/HelloWorldApp.Tests.csproj
+            displayName: 'Install dependencies'
+
+          # Build project
+          - script: |
+              dotnet build --configuration Release HelloWorldApp/HelloWorldApp.csproj
+              dotnet build --configuration Release HelloWorldApp.Tests/HelloWorldApp.Tests.csproj
+            displayName: 'Build project'
+
+          # Initialize CodeQL Database
+          - script: |
+              codeql database create codeql-db --language=csharp --source-root=.
+            displayName: 'Initialize CodeQL Database'
+
+          # Analyze CodeQL Database
+          - script: |
+              codeql database analyze codeql-db --format=sarif-latest --output=results.sarif
+            displayName: 'Analyze CodeQL Database'
+
+          # Publish SARIF results as artifacts
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish CodeQL Results'
+            inputs:
+              pathToPublish: 'results.sarif'
+              artifactName: 'CodeQL-Results'
+              
           - script: |
               echo "Cloning old repository..."
               git clone --mirror https://$(AZURE_USERNAME):$(AZURE_PAT)@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc
