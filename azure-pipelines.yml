@@ -51,10 +51,14 @@ stages:
               command: 'test'
               projects: '**/*.csproj'
           
-          - task: VSBuild@1
+          - task: DotNetCoreCLI@2
+            displayName: 'Build'
             inputs:
-              solution: '**/*.sln'
-              msbuildArgs: '/t:Rebuild /p:Configuration=Release'
+              command: 'build' 
+              projects: |
+                HelloWorldApp/HelloWorldApp.csproj
+                HelloWorldApp.Tests/HelloWorldApp.Tests.csproj
+              arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
           
           - task: SonarCloudPrepare@3
             displayName: 'Sonar Prepare'
