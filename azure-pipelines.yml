@@ -5,6 +5,8 @@ trigger:
 
 pool: 'agentpool'
 
+variables:
+  CODEQL_LANGUAGE: 'csharp'
 
 parameters:
   - name: Directory
@@ -20,10 +22,6 @@ stages:
       - job: QualityGate
         displayName: QualityGate
         steps:
-          
-          - task: Checkout@1
-            displayName: 'Checkout repository'
-
           # Install CodeQL CLI
           - script: |
               curl -sSL https://github.com/github/codeql-cli-binaries/releases/download/v2.12.5/codeql-linux64.zip -o codeql.zip
@@ -66,7 +64,7 @@ stages:
             inputs:
               pathToPublish: 'results.sarif'
               artifactName: 'CodeQL-Results'
-              
+
           - script: |
               echo "Cloning old repository..."
               git clone --mirror https://$(AZURE_USERNAME):$(AZURE_PAT)@dev.azure.com/ImmanuelSianturi/Project-Poc/_git/Project-Poc
