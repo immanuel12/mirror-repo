@@ -57,7 +57,7 @@ stages:
               SonarCloud: 'sonarcloud'
               organization: 'immanuel12'
               scannerMode: 'dotnet'
-              dotnetScannerVersion: '8.x'
+              dotnetScannerVersion: '5.12.0'
               projectKey: 'sonar.projectKey'
               projectName: 'sonar.projectName'
           
