@@ -58,7 +58,7 @@ stages:
               SonarCloud: 'sonarcloud'
               organization: 'immanuel12'
               scannerMode: 'dotnet'
-              projectKey: 'ImmanuelSianturi_Project-Poc'
+              projectKey: 'immanuelsianturi'
               projectName: 'Project-Poc'
 
           - task: DotNetCoreCLI@2
