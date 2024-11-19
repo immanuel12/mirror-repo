@@ -55,7 +55,7 @@ stages:
             displayName: 'Build'
             inputs:
               command: 'build' 
-              projects: '**/*.sln'
+              projects: 'HelloWorldApp/HelloWorldApp.sln'
               arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
           
           - task: SonarCloudPrepare@3
