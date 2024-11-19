@@ -52,12 +52,6 @@ stages:
               projects: '**/*.csproj'
               arguments: '--configuration $(BuildConfiguration)'
 
-          - task: DotNetCoreCLI@2
-            displayName: 'Run Unit Tests'
-            inputs:
-              command: 'test'
-              projects: '**/*.csproj'
-          
           - task: SonarCloudPrepare@3
             displayName: 'Sonar Prepare'
             inputs:
@@ -66,6 +60,12 @@ stages:
               scannerMode: 'dotnet'
               projectKey: 'ImmanuelSianturi_Project-Poc'
               projectName: 'Project-Poc'
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Run Unit Tests'
+            inputs:
+              command: 'test'
+              projects: '**/*.csproj'
 
           - task: SonarCloudAnalyze@3
             displayName: 'Sonar Run Analys'
