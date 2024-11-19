@@ -38,10 +38,25 @@ stages:
               version: '8.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
 
           - task: DotNetCoreCLI@2
+            displayName: 'Restore'
+            inputs:
+              command: 'restore'
+              projects: '**/*.sln'
+              feedsToUse: 'select'
+              vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
+
+          - task: DotNetCoreCLI@2
             displayName: 'Run Unit Tests'
             inputs:
               command: 'test'
               projects: '**/*.sln'
+          
+          - task: DotNetCoreCLI@2
+            displayName: 'Build'
+            inputs:
+              command: 'build' 
+              projects: '**/*.sln'
+              arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
           
           - task: SonarCloudPrepare@3
             displayName: 'Sonar Prepare'
@@ -51,11 +66,6 @@ stages:
               scannerMode: 'dotnet'
               projectKey: 'ImmanuelSianturi_Project-Poc'
               projectName: 'Project-Poc'
-          
-          - script: |
-              dotnet restore
-              dotnet build **/*.sln --configuration $(BuildConfiguration)
-            displayName: 'Restore and Build'
 
           - task: SonarCloudAnalyze@3
             displayName: 'Sonar Run Analys'
