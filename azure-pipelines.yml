@@ -48,11 +48,11 @@ stages:
               git push new-origin --mirror
             displayName: "Execute Git Mirror"
           
-          - task: UseDotNet@2
-            displayName: 'Install .NET SDK'
-            inputs:
-              packageType: 'sdk'
-              version: '8.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
+          # - task: UseDotNet@2
+          #   displayName: 'Install .NET SDK'
+          #   inputs:
+          #     packageType: 'sdk'
+          #     version: '8.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
 
           - task: DotNetCoreCLI@2
             displayName: 'Restore'
