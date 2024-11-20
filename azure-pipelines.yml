@@ -26,7 +26,7 @@ parameters:
 
 variables:
   be_st_rg: 'rg-terraform-tfstate'
-  be_st: 'stdevsecops'
+  be_st: 'stagitdevsecops'
   be_st_ctr: 'terraform'
   be_st_sku: 'Standard_LRS'
 
