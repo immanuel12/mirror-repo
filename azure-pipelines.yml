@@ -12,7 +12,7 @@ parameters:
     default: Terraform
   - name: ProjectNumber
     type: string
-    default: "PHR-DevSecOps"
+    default: "PHRDevSecOps"
   - name: ServiceConnection
     type: string
     default: "CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)"
