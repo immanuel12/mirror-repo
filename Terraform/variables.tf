@@ -9,3 +9,7 @@ variable "project_name" {
 variable "zone" {
   description = "Availability Zone"
 }
+
+variable "backend" {
+  type = any
+}
