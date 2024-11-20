@@ -7,11 +7,28 @@ pool: 'agentpool'
 
 
 parameters:
-  - name: Directory
+  - name: TemplateFolder
     type: string
     default: Terraform
-# variables:
-#   system.debug: true
+  - name: ProjectNumber
+    type: string
+    default: "PHR-DevSecOps"
+  - name: ServiceConnection
+    type: string
+    default: "CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)"
+  - name: TemplateVariables
+    type: object
+    default:
+      #SUBSCRIPTION_ID: "c5d720ec-18ce-4292-a787-ef49ad9cbf6c"
+      DOMAIN_SUFFIX: "ag-it.com"
+      ENTITY: "agit"
+      LOCATION: "southeastasia"
+
+variables:
+  be_st_rg: 'rg-terraform-tfstate'
+  be_st: 'stagitDevSecOps'
+  be_st_ctr: 'terraform'
+  be_st_sku: 'Standard_LRS'
 
 stages:
   - stage: PipelineQualityGate
@@ -125,6 +142,42 @@ stages:
       - job: CD
         displayName: CD
         steps:
+          - task: AzureCLI@2
+            displayName: 'Storage Account for TFstate File'
+            inputs:
+              azureSubscription: "${{ parameters.ServiceConnection }}"
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                rg_exists=$(az group exists --name $(be_st_rg))
+                ctr_exists=$(az storage container exists --name $(be_st_ctr) --account-name $(be_st) --query exists)
+                echo "rg_exists value: $rg_exists"
+                echo "ctr_exists value: $ctr_exists"
+
+                if [ "$rg_exists" == "true" ]; then
+                  echo "Resource group $(be_st_rg) already exist!"
+                else
+                  echo "Creating resource group $(be_st_rg)..."
+                  az group create \
+                  --location '${{ parameters.TemplateVariables.LOCATION }}' \
+                  --name '$(be_st_rg)'
+                fi
+
+                if [ "$ctr_exists" == "true" ]; then
+                  echo "Storage container $(be_st_ctr) already exist!"
+                else
+                  echo "Creating storage account $(be_st)..."
+                  az storage account create \
+                  --name '$(be_st)' \
+                  --resource-group '$(be_st_rg)' \
+                  --location '${{ parameters.TemplateVariables.LOCATION }}' \
+                  --sku '$(be_st_sku)'
+
+                  az storage container create \
+                  --name '$(be_st_ctr)' \
+                  --account-name '$(be_st)'
+                fi
+
           - task: Bash@3
             displayName: 'Install unzip'
             inputs:
@@ -143,16 +196,14 @@ stages:
             inputs:
               command: 'init'
               backendType: 'azurerm'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.Directory }}'
-              backendServiceArm: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
+              backendServiceArm: '${{ parameters.ServiceConnection }}'
               ensureBackend: true
-              backendAzureRmTenantId: '28c4ac60-7fdf-4ab1-b3fc-8abb83bdb75b'
-              backendAzureRmSubscriptionId: '040f3cb8-8dca-4775-b127-da8ea12c4f54'
-              backendAzureRmResourceGroupName: 'rg-agent'
-              backendAzureRmResourceGroupLocation: 'southeastasia'
-              backendAzureRmStorageAccountName: 'stpocdevsecops'
-              backendAzureRmContainerName: 'tfstate'
-              backendAzureRmKey: 'tf/terraform.tfstate'
+              backendAzureRmResourceGroupName: '$(be_st_rg)'
+              backendAzureRmResourceGroupLocation: '${{ parameters.TemplateVariables.LOCATION }}'
+              backendAzureRmStorageAccountName: '$(be_st)'
+              backendAzureRmContainerName: '$(be_st_ctr)'
+              backendAzureRmKey: '${{ parameters.ProjectNumber }}-terraform-${{ parameters.Environment }}.tfstate'
               backendAzureRmStorageAccountSku: 'Standard_LRS'
               allowTelemetryCollection: true
           
@@ -160,16 +211,14 @@ stages:
             displayName: 'Terraform Plan'
             inputs:
               command: 'plan'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.Directory }}'
-              environmentServiceName: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
-              providerAzureRmSubscriptionId: '040f3cb8-8dca-4775-b127-da8ea12c4f54'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
+              environmentServiceName: '${{ parameters.ServiceConnection }}'
               allowTelemetryCollection: true
 
           - task: TerraformCLI@2
             displayName: 'Terraform Apply'
             inputs:
               command: 'apply'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.Directory }}'
-              environmentServiceName: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
-              providerAzureRmSubscriptionId: '040f3cb8-8dca-4775-b127-da8ea12c4f54'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
+              environmentServiceName: '${{ parameters.ServiceConnection }}'
               allowTelemetryCollection: true
