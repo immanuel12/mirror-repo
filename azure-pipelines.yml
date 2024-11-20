@@ -203,7 +203,7 @@ stages:
               backendAzureRmResourceGroupLocation: '${{ parameters.TemplateVariables.LOCATION }}'
               backendAzureRmStorageAccountName: '$(be_st)'
               backendAzureRmContainerName: '$(be_st_ctr)'
-              backendAzureRmKey: '${{ parameters.ProjectNumber }}-terraform-${{ parameters.Environment }}.tfstate'
+              backendAzureRmKey: '${{ parameters.ProjectNumber }}-terraform.tfstate'
               backendAzureRmStorageAccountSku: 'Standard_LRS'
               allowTelemetryCollection: true
           
