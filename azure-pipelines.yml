@@ -268,8 +268,6 @@ stages:
 
       - job: "DeploytoAppService"
         displayName: "DeploytoAppService"
-        dependsOn:
-          - TerrraformApply
         pool: agentpools
         steps:
           - task: AzureRmWebAppDeployment@4
