@@ -127,10 +127,10 @@ stages:
             displayName: 'Publish Project'
             inputs:
               command: 'publish'
-              publishWebProjects: True # Change to true if this is a web project
+              publishWebProjects: false # Change to true if this is a web project
               projects: '**/*.csproj'
               arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-              zipAfterPublish: True
+              zipAfterPublish: true
           
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Artifact'
