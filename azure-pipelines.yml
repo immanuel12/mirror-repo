@@ -238,6 +238,22 @@ stages:
         pool: 'agentpools'
         steps:
           - task: TerraformCLI@2
+            displayName: 'Terraform Init'
+            inputs:
+              command: 'init'
+              backendType: 'azurerm'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
+              backendServiceArm: '${{ parameters.ServiceConnection }}'
+              ensureBackend: true
+              backendAzureRmResourceGroupName: '$(be_st_rg)'
+              backendAzureRmResourceGroupLocation: '${{ parameters.TemplateVariables.LOCATION }}'
+              backendAzureRmStorageAccountName: '$(be_st)'
+              backendAzureRmContainerName: '$(be_st_ctr)'
+              backendAzureRmKey: '${{ parameters.ProjectNumber }}-terraform.tfstate'
+              backendAzureRmStorageAccountSku: 'Standard_LRS'
+              allowTelemetryCollection: true
+              
+          - task: TerraformCLI@2
             displayName: 'Terraform Apply'
             inputs:
               command: 'apply'
