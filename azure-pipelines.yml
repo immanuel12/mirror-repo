@@ -217,6 +217,13 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
               environmentServiceName: '${{ parameters.ServiceConnection }}'
               allowTelemetryCollection: true
+          
+          - task: ManualValidation@0
+            displayName: "Review required"
+            timeoutInMinutes: 5
+            inputs:
+              notifyUsers: "immanuel.sianturi@ag-it.com" 
+              instructions: "Review required"
 
           - task: TerraformCLI@2
             displayName: 'Terraform Apply'
