@@ -291,7 +291,7 @@ stages:
             inputs:
               command: 'build' 
               projects: '**/*.csproj'
-              arguments: '--configuration $(BuildConfiguration)'
+              arguments: '--configuration $(System.DefaultWorkingDirectory)'
           
           - task: DotNetCoreCLI@2
             displayName: 'Publish Project'
@@ -299,8 +299,8 @@ stages:
               command: 'publish'
               publishWebProjects: false # Change to true if this is a web project
               projects: '**/*.csproj'
-              arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-              
+              arguments: '--configuration $(System.DefaultWorkingDirectory) --output $(build.artifactstagingdirectory)'
+
           - task: AzureRmWebAppDeployment@4
             inputs:
               ConnectionType: 'AzureRM'
