@@ -269,7 +269,38 @@ stages:
       - job: "DeploytoAppService"
         displayName: "DeploytoAppService"
         pool: agentpools
+        dependsOn:
+          - TerraformApply
         steps:
+          - task: UseDotNet@2
+            displayName: 'Install .NET SDK'
+            inputs:
+              packageType: 'sdk'
+              version: '8.x'
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore'
+            inputs:
+              command: 'restore'
+              projects: '**/*.csproj'
+              feedsToUse: 'select'
+              vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Build'
+            inputs:
+              command: 'build' 
+              projects: '**/*.csproj'
+              arguments: '--configuration $(BuildConfiguration)'
+          
+          - task: DotNetCoreCLI@2
+            displayName: 'Publish Project'
+            inputs:
+              command: 'publish'
+              publishWebProjects: false # Change to true if this is a web project
+              projects: '**/*.csproj'
+              arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+              
           - task: AzureRmWebAppDeployment@4
             inputs:
               ConnectionType: 'AzureRM'
