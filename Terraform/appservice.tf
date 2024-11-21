@@ -20,9 +20,9 @@ resource "azurerm_app_service" "app_service" {
     scm_type                 = "LocalGit"
   }
 
-  app_settings = {
-    "SOME_KEY" = "some-value"
-  }
+#   app_settings = {
+#     "SOME_KEY" = "some-value"
+#   }
 
   connection_string {
     name  = "Database"
