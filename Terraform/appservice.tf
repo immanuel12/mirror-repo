@@ -25,9 +25,9 @@ resource "azurerm_app_service" "app_service" {
     use_32_bit_worker_process = true
   }
 
-  connection_string {
-    name  = "Database"
-    type  = "SQLServer"
-    value = "Server=sql-devsecops.database.windows.net;Database=db-devsecops;User ID=sqladmin;Password=P@ssw0rd123!;Encrypt=true;TrustServerCertificate=false;Connection Timeout=30;"
-  }
+#   connection_string {
+#     name  = "Database"
+#     type  = "SQLServer"
+#     value = "Server=sql-devsecops.database.windows.net;Database=db-devsecops;User ID=sqladmin;Password=P@ssw0rd123!;Encrypt=true;TrustServerCertificate=false;Connection Timeout=30;"
+#   }
 }
