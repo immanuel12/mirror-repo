@@ -20,7 +20,7 @@ resource "azurerm_app_service" "app_service" {
   site_config {
     always_on = true
     default_documents        = ["Default.htm","Default.html","Default.asp","index.htm","index.html","iisstart.htm","default.aspx","index.php","hostingstart.html",]
-    dotnet_framework_version = "v8.0"
+    dotnet_framework_version = "v6.0"
     scm_type                 = "None"
     use_32_bit_worker_process = true
   }
