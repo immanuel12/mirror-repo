@@ -222,6 +222,7 @@ stages:
         displayName: "Terraform Review"
         dependsOn:
           - IaC
+        pool: server
         steps:
           - task: ManualValidation@0
             displayName: "Review required"
@@ -230,6 +231,12 @@ stages:
               notifyUsers: "immanuel.sianturi@ag-it.com" 
               instructions: "Review required"
 
+      - job: "TerraformApply"
+        displayName: "Terraform Aplly"
+        dependsOn:
+          - TerraformReview
+        pool: 'agentpools'
+        steps:
           - task: TerraformCLI@2
             displayName: 'Terraform Apply'
             inputs:
