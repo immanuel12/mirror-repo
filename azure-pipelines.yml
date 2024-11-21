@@ -222,7 +222,6 @@ stages:
         displayName: "Terraform Review"
         dependsOn:
           - IaC
-        pool: server
         steps:
           - task: ManualValidation@0
             displayName: "Review required"
