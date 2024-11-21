@@ -102,8 +102,11 @@ stages:
       - job: CI
         displayName: CI
         steps:
-          - task: NuGetAuthenticate@1
-            displayName: 'NuGet Authenticate'
+          - task: UseDotNet@2
+            displayName: 'Install .NET SDK'
+            inputs:
+              packageType: 'sdk'
+              version: '8.x'
 
           - task: DotNetCoreCLI@2
             displayName: 'Restore'
