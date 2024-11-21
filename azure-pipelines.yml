@@ -221,7 +221,7 @@ stages:
       - job: "TerraformReview"
         displayName: "Terraform Review"
         dependsOn:
-          - TerraformPlan
+          - IaC
         pool: server
         steps:
           - task: ManualValidation@0
