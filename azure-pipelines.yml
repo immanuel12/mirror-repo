@@ -237,6 +237,11 @@ stages:
           - TerraformReview
         pool: 'agentpools'
         steps:
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+            displayName: "Terraform Installer"
+            inputs:
+              terraformVersion: latest
+
           - task: TerraformCLI@2
             displayName: 'Terraform Init'
             inputs:
@@ -252,7 +257,7 @@ stages:
               backendAzureRmKey: '${{ parameters.ProjectNumber }}-terraform.tfstate'
               backendAzureRmStorageAccountSku: 'Standard_LRS'
               allowTelemetryCollection: true
-              
+
           - task: TerraformCLI@2
             displayName: 'Terraform Apply'
             inputs:
