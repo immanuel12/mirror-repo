@@ -139,11 +139,11 @@ stages:
               publishLocation: 'Container'
               StoreAsTar: true
   
-  - stage: PipelineCD
-    displayName: CD
+  - stage: PipelineIaC
+    displayName: IaC
     jobs:            
-      - job: CD
-        displayName: CD
+      - job: IaC
+        displayName: IaC
         steps:
           - task: AzureCLI@2
             displayName: 'Storage Account for TFstate File'
@@ -217,7 +217,13 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
               environmentServiceName: '${{ parameters.ServiceConnection }}'
               allowTelemetryCollection: true
-          
+      
+      - job: "TerraformReview"
+        displayName: "Terraform Review"
+        dependsOn:
+          - TerraformPlan
+        pool: server
+        steps:
           - task: ManualValidation@0
             displayName: "Review required"
             timeoutInMinutes: 5
