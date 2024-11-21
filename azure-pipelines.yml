@@ -146,7 +146,7 @@ stages:
               azureSubscription: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
               appType: 'webApp'
               WebAppName: 'appservice-devsecops'
-              packageForLinux: '$(System.artifactstagingdirectory)/**/*.zip'
+              packageForLinux: '$(build.artifactstagingdirectory)/**/*.zip'
   
   - stage: PipelineIaC
     displayName: IaC
