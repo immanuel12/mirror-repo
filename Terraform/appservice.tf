@@ -27,7 +27,7 @@ resource "azurerm_app_service" "app_service" {
 
   connection_string {
     name  = "sql-devsecops"
-    type  = "SQLAzure"
+    type  = "SQLServer"
     value = "Server=tcp:sql-devsecops.database.windows.net,1433;Initial Catalog=db-devsecops;User ID=admin@sql-devsecops;Password=P@ssw0rd123!;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   }
 }
