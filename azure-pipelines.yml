@@ -93,6 +93,10 @@ stages:
             displayName: 'Sonar Publish'
             inputs:
               pollingTimeoutSec: '300'
+
+          - task: JMeterInstaller@0
+            inputs:
+              jmeterVersion: '5.6.3'
           
           
    
