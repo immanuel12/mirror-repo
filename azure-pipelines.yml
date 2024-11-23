@@ -103,7 +103,7 @@ stages:
               jmeterVersion: '5.6.3'
           
           - script: |
-              .jmeter \
+              jmeter \
                 -n \
                 -t $(System.DefaultWorkingDirectory)/load_test_dotnet.jmx \
                 -l $(System.DefaultWorkingDirectory)/jmeter-results/result.jtl \
