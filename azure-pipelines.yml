@@ -94,24 +94,21 @@ stages:
             inputs:
               pollingTimeoutSec: '300'
           
-          - task: perfanalyzer@1
+          - script: |
+              echo "Default Working Directory: $(System.DefaultWorkingDirectory)"
+            displayName: 'Check Default Working Directory'
+
+          - task: JMeterInstaller@0
             inputs:
-              jmxSource: 'sourceCode'
-              jmxsourceRunFilePath: '$(System.DefaultWorkingDirectory)/load_test_dotnet.jmx'
-              jmxPropertySource: 'none'
-              jmxInputFilesSource: 'none'
-              publishResultsToBuildArtifact: true
-              artifactNameReport: 'PerfAnalyzerReport_$(Stage.StageDisplayName)'
-              artifactNameLog: 'PerfAnalyzerLogs_$(Stage.StageDisplayName)'
-              failPipelineIfJMeterFails: true
-              maxFailureCountForJMeter: '100'
-              addCustomPluginsToJMeterLib: false
-              jmeterURI: 'https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.5.tgz'
-              extractedfolderNameforJMeterBinary: 'apache-jmeter-5.5'
-              jmeterCustomUnzippedFolderName: 'apache-jmeter-5.5'
-              jmeterLogFolder: 'CurrentLog_$(Stage.StageDisplayName)'
-              jmeterReportFolder: 'CurrentReport_$(Stage.StageDisplayName)'
-              telemetryDataCollection: true
+              jmeterVersion: '5.6.3'
+          
+          - script: |
+              ./jmeter/apache-jmeter-5.5/bin/jmeter \
+                -n \
+                -t $(System.DefaultWorkingDirectory)/load_test_dotnet.jmx \
+                -l $(System.DefaultWorkingDirectory)/jmeter-results/result.jtl \
+                -j $(System.DefaultWorkingDirectory)/jmeter-results/jmeter.log
+            displayName: 'Run JMeter Tests'
 
           # Step 3: Publish JMeter Results
           - task: PublishBuildArtifacts@1
