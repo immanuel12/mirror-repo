@@ -68,7 +68,6 @@
             </collectionProp>
           </HeaderManager>
           <hashTree/>
-          <StringProperty name="HTTPSampler.postBodyRaw">true</StringProperty>
           <stringProp name="HTTPSampler.postBody">
             <![CDATA[
             {
