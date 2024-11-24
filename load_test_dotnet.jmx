@@ -14,7 +14,7 @@
       <boolProp name="ThreadGroup.scheduler">false</boolProp>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET NameEntries API" enabled="true">
-          <stringProp name="HTTPSampler.domain">0.0.0.0</stringProp>
+          <stringProp name="HTTPSampler.domain">20.190.78.211</stringProp>
           <stringProp name="HTTPSampler.port">5105</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.path">/api/NameEntries/</stringProp>
