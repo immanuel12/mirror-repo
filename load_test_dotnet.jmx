@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
   <hashTree>
     <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
