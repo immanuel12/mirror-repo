@@ -12,9 +12,6 @@
       <longProp name="ThreadGroup.start_time">1698825202000</longProp>
       <longProp name="ThreadGroup.end_time">1698825202000</longProp>
       <boolProp name="ThreadGroup.scheduler">false</boolProp>
-      <elementProp name="ThreadGroup.samplers" elementType="List">
-        <stringProp name="ThreadGroup.samplers">HTTP Request</stringProp>
-      </elementProp>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET NameEntries API" enabled="true">
           <stringProp name="HTTPSampler.domain">0.0.0.0</stringProp>
