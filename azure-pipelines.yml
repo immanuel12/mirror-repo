@@ -91,15 +91,15 @@ stages:
               command: 'test'
               projects: '**/*.csproj'
 
-          # - task: SonarCloudAnalyze@3
-          #   displayName: 'Sonar Run Analys'
-          #   inputs:
-          #     jdkversion: 'JAVA_HOME_21_X64'
+          - task: SonarCloudAnalyze@3
+            displayName: 'Sonar Run Analys'
+            inputs:
+              jdkversion: 'JAVA_HOME_21_X64'
 
-          # - task: SonarCloudPublish@3
-          #   displayName: 'Sonar Publish'
-          #   inputs:
-          #     pollingTimeoutSec: '300'
+          - task: SonarCloudPublish@3
+            displayName: 'Sonar Publish'
+            inputs:
+              pollingTimeoutSec: '300'
           
           
   - stage: PipelineCI
@@ -153,7 +153,7 @@ stages:
               azureSubscription: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
               appType: 'webApp'
               WebAppName: 'appservice-devsecops'
-              packageForLinux: '$(build.artifactstagingdirectory)/AdminPortalAPI.zip'
+              packageForLinux: '$(build.artifactstagingdirectory)/HelloWorldApp.zip'
   
   - stage: PipelineIaC
     displayName: IaC

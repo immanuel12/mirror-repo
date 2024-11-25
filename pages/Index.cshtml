@@ -1,0 +1,26 @@
+@page
+@model HelloWorldApp.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "Name Entries";
+}
+
+<h1>Name Entries</h1>
+
+<!-- Form dengan ASP.NET Tag Helper untuk CSRF -->
+<form method="post" asp-antiforgery="true">
+    @Html.AntiForgeryToken() <!-- Token Anti-CSRF -->
+    
+    <input asp-for="Name" placeholder="Enter name" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+    
+    <button type="submit">Add Name</button>
+</form>
+
+<!-- Daftar Nama -->
+<ul>
+    @foreach (var entry in Model.NameEntries)
+    {
+        <li>@entry.Name</li>
+    }
+</ul>
