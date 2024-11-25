@@ -69,12 +69,12 @@ stages:
               projects: '**/*.csproj'
               arguments: '--configuration $(BuildConfiguration)'
           
-          # - task: DotNetCoreCLI@2
-          #   displayName: 'Build Sln'
-          #   inputs:
-          #     command: 'build' 
-          #     projects: '**/*.sln'
-          #     arguments: '--configuration release'
+          - task: DotNetCoreCLI@2
+            displayName: 'Build Sln'
+            inputs:
+              command: 'build' 
+              projects: '**/*.sln'
+              arguments: '--configuration release'
 
           - task: SonarCloudPrepare@3
             displayName: 'Sonar Prepare'
