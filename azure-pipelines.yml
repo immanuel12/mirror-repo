@@ -94,207 +94,182 @@ stages:
             inputs:
               pollingTimeoutSec: '300'
           
-          - script: |
-              echo "Default Working Directory: $(System.DefaultWorkingDirectory)"
-            displayName: 'Check Default Working Directory'
-
-          - task: JMeterInstaller@0
-            inputs:
-              jmeterVersion: '5.6.3'
           
-          - script: |
-              jmeter \
-                -n \
-                -t $(System.DefaultWorkingDirectory)/load_test_dotnet.jmx \
-                -l $(System.DefaultWorkingDirectory)/jmeter-results/result.jtl \
-                -j $(System.DefaultWorkingDirectory)/jmeter-results/jmeter.log
-            displayName: 'Run JMeter Tests'
+  - stage: PipelineCI
+    displayName: CI
+    jobs:            
+      - job: CI
+        displayName: CI
+        steps:
+          - task: UseDotNet@2
+            displayName: 'Install .NET SDK'
+            inputs:
+              packageType: 'sdk'
+              version: '8.x'
 
-          # Step 3: Publish JMeter Results
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore'
+            inputs:
+              command: 'restore'
+              projects: '**/*.csproj'
+              feedsToUse: 'select'
+              vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Build'
+            inputs:
+              command: 'build' 
+              projects: '**/*.csproj'
+              arguments: '--configuration $(BuildConfiguration)'
+          
+          - task: DotNetCoreCLI@2
+            displayName: 'Publish Project'
+            inputs:
+              command: 'publish'
+              publishWebProjects: false # Change to true if this is a web project
+              projects: '**/*.csproj'
+              arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+              zipAfterPublish: true
+          
           - task: PublishBuildArtifacts@1
+            displayName: 'Publish Artifact'
             inputs:
-              pathToPublish: $(System.DefaultWorkingDirectory)/jmeter-results
-              artifactName: JMeterResults
-              publishLocation: Container
-            displayName: 'Publish JMeter Results'
-          
-          
-   
-  # - stage: PipelineCI
-  #   displayName: CI
-  #   jobs:            
-  #     - job: CI
-  #       displayName: CI
-  #       steps:
-  #         - task: UseDotNet@2
-  #           displayName: 'Install .NET SDK'
-  #           inputs:
-  #             packageType: 'sdk'
-  #             version: '8.x'
+              PathtoPublish: '$(build.artifactstagingdirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+              StoreAsTar: true
 
-  #         - task: DotNetCoreCLI@2
-  #           displayName: 'Restore'
-  #           inputs:
-  #             command: 'restore'
-  #             projects: '**/*.csproj'
-  #             feedsToUse: 'select'
-  #             vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
-
-  #         - task: DotNetCoreCLI@2
-  #           displayName: 'Build'
-  #           inputs:
-  #             command: 'build' 
-  #             projects: '**/*.csproj'
-  #             arguments: '--configuration $(BuildConfiguration)'
-          
-  #         - task: DotNetCoreCLI@2
-  #           displayName: 'Publish Project'
-  #           inputs:
-  #             command: 'publish'
-  #             publishWebProjects: false # Change to true if this is a web project
-  #             projects: '**/*.csproj'
-  #             arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-  #             zipAfterPublish: true
-          
-  #         - task: PublishBuildArtifacts@1
-  #           displayName: 'Publish Artifact'
-  #           inputs:
-  #             PathtoPublish: '$(build.artifactstagingdirectory)'
-  #             ArtifactName: 'drop'
-  #             publishLocation: 'Container'
-  #             StoreAsTar: true
-
-  #         - task: AzureRmWebAppDeployment@4
-  #           inputs:
-  #             ConnectionType: 'AzureRM'
-  #             azureSubscription: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
-  #             appType: 'webApp'
-  #             WebAppName: 'appservice-devsecops'
-  #             packageForLinux: '$(build.artifactstagingdirectory)/HelloWorldApp.zip'
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'CMP-1(040f3cb8-8dca-4775-b127-da8ea12c4f54)'
+              appType: 'webApp'
+              WebAppName: 'appservice-devsecops'
+              packageForLinux: '$(build.artifactstagingdirectory)/HelloWorldApp.zip'
   
-  # - stage: PipelineIaC
-  #   displayName: IaC
-  #   jobs:            
-  #     - job: IaC
-  #       displayName: IaC
-  #       steps:
-  #         - task: AzureCLI@2
-  #           displayName: 'Storage Account for TFstate File'
-  #           inputs:
-  #             azureSubscription: "${{ parameters.ServiceConnection }}"
-  #             scriptType: bash
-  #             scriptLocation: inlineScript
-  #             inlineScript: |
-  #               rg_exists=$(az group exists --name $(be_st_rg))
-  #               ctr_exists=$(az storage container exists --name $(be_st_ctr) --account-name $(be_st) --query exists)
-  #               echo "rg_exists value: $rg_exists"
-  #               echo "ctr_exists value: $ctr_exists"
+  - stage: PipelineIaC
+    displayName: IaC
+    jobs:            
+      - job: IaC
+        displayName: IaC
+        steps:
+          - task: AzureCLI@2
+            displayName: 'Storage Account for TFstate File'
+            inputs:
+              azureSubscription: "${{ parameters.ServiceConnection }}"
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                rg_exists=$(az group exists --name $(be_st_rg))
+                ctr_exists=$(az storage container exists --name $(be_st_ctr) --account-name $(be_st) --query exists)
+                echo "rg_exists value: $rg_exists"
+                echo "ctr_exists value: $ctr_exists"
 
-  #               if [ "$rg_exists" == "true" ]; then
-  #                 echo "Resource group $(be_st_rg) already exist!"
-  #               else
-  #                 echo "Creating resource group $(be_st_rg)..."
-  #                 az group create \
-  #                 --location '${{ parameters.TemplateVariables.LOCATION }}' \
-  #                 --name '$(be_st_rg)'
-  #               fi
+                if [ "$rg_exists" == "true" ]; then
+                  echo "Resource group $(be_st_rg) already exist!"
+                else
+                  echo "Creating resource group $(be_st_rg)..."
+                  az group create \
+                  --location '${{ parameters.TemplateVariables.LOCATION }}' \
+                  --name '$(be_st_rg)'
+                fi
 
-  #               if [ "$ctr_exists" == "true" ]; then
-  #                 echo "Storage container $(be_st_ctr) already exist!"
-  #               else
-  #                 echo "Creating storage account $(be_st)..."
-  #                 az storage account create \
-  #                 --name '$(be_st)' \
-  #                 --resource-group '$(be_st_rg)' \
-  #                 --location '${{ parameters.TemplateVariables.LOCATION }}' \
-  #                 --sku '$(be_st_sku)'
+                if [ "$ctr_exists" == "true" ]; then
+                  echo "Storage container $(be_st_ctr) already exist!"
+                else
+                  echo "Creating storage account $(be_st)..."
+                  az storage account create \
+                  --name '$(be_st)' \
+                  --resource-group '$(be_st_rg)' \
+                  --location '${{ parameters.TemplateVariables.LOCATION }}' \
+                  --sku '$(be_st_sku)'
 
-  #                 az storage container create \
-  #                 --name '$(be_st_ctr)' \
-  #                 --account-name '$(be_st)'
-  #               fi
+                  az storage container create \
+                  --name '$(be_st_ctr)' \
+                  --account-name '$(be_st)'
+                fi
 
-  #         - task: Bash@3
-  #           displayName: 'Install unzip'
-  #           inputs:
-  #             targetType: 'inline'
-  #             script: |
-  #               sudo apt-get update
-  #               sudo apt-get install -y unzip
+          - task: Bash@3
+            displayName: 'Install unzip'
+            inputs:
+              targetType: 'inline'
+              script: |
+                sudo apt-get update
+                sudo apt-get install -y unzip
 
-  #         - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-  #           displayName: "Terraform Installer"
-  #           inputs:
-  #             terraformVersion: latest
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+            displayName: "Terraform Installer"
+            inputs:
+              terraformVersion: latest
 
-  #         - task: TerraformCLI@2
-  #           displayName: 'Terraform Init'
-  #           inputs:
-  #             command: 'init'
-  #             backendType: 'azurerm'
-  #             workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
-  #             backendServiceArm: '${{ parameters.ServiceConnection }}'
-  #             ensureBackend: true
-  #             backendAzureRmResourceGroupName: '$(be_st_rg)'
-  #             backendAzureRmResourceGroupLocation: '${{ parameters.TemplateVariables.LOCATION }}'
-  #             backendAzureRmStorageAccountName: '$(be_st)'
-  #             backendAzureRmContainerName: '$(be_st_ctr)'
-  #             backendAzureRmKey: '${{ parameters.ProjectNumber }}-terraform.tfstate'
-  #             backendAzureRmStorageAccountSku: 'Standard_LRS'
-  #             allowTelemetryCollection: true
+          - task: TerraformCLI@2
+            displayName: 'Terraform Init'
+            inputs:
+              command: 'init'
+              backendType: 'azurerm'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
+              backendServiceArm: '${{ parameters.ServiceConnection }}'
+              ensureBackend: true
+              backendAzureRmResourceGroupName: '$(be_st_rg)'
+              backendAzureRmResourceGroupLocation: '${{ parameters.TemplateVariables.LOCATION }}'
+              backendAzureRmStorageAccountName: '$(be_st)'
+              backendAzureRmContainerName: '$(be_st_ctr)'
+              backendAzureRmKey: '${{ parameters.ProjectNumber }}-terraform.tfstate'
+              backendAzureRmStorageAccountSku: 'Standard_LRS'
+              allowTelemetryCollection: true
           
-  #         - task: TerraformCLI@2
-  #           displayName: 'Terraform Plan'
-  #           inputs:
-  #             command: 'plan'
-  #             workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
-  #             environmentServiceName: '${{ parameters.ServiceConnection }}'
-  #             allowTelemetryCollection: true
+          - task: TerraformCLI@2
+            displayName: 'Terraform Plan'
+            inputs:
+              command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
+              environmentServiceName: '${{ parameters.ServiceConnection }}'
+              allowTelemetryCollection: true
       
-  #     - job: "TerraformReview"
-  #       displayName: "Terraform Review"
-  #       dependsOn:
-  #         - IaC
-  #       pool: server
-  #       steps:
-  #         - task: ManualValidation@0
-  #           displayName: "Review required"
-  #           timeoutInMinutes: 5
-  #           inputs:
-  #             notifyUsers: "immanuel.sianturi@ag-it.com" 
-  #             instructions: "Review required"
+      - job: "TerraformReview"
+        displayName: "Terraform Review"
+        dependsOn:
+          - IaC
+        pool: server
+        steps:
+          - task: ManualValidation@0
+            displayName: "Review required"
+            timeoutInMinutes: 5
+            inputs:
+              notifyUsers: "immanuel.sianturi@ag-it.com" 
+              instructions: "Review required"
 
-  #     - job: "TerraformApply"
-  #       displayName: "Terraform Aplly"
-  #       dependsOn:
-  #         - TerraformReview
-  #       pool: 'agentpools'
-  #       steps:
-  #         - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-  #           displayName: "Terraform Installer"
-  #           inputs:
-  #             terraformVersion: latest
+      - job: "TerraformApply"
+        displayName: "Terraform Aplly"
+        dependsOn:
+          - TerraformReview
+        pool: 'agentpools'
+        steps:
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+            displayName: "Terraform Installer"
+            inputs:
+              terraformVersion: latest
 
-  #         - task: TerraformCLI@2
-  #           displayName: 'Terraform Init'
-  #           inputs:
-  #             command: 'init'
-  #             backendType: 'azurerm'
-  #             workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
-  #             backendServiceArm: '${{ parameters.ServiceConnection }}'
-  #             ensureBackend: true
-  #             backendAzureRmResourceGroupName: '$(be_st_rg)'
-  #             backendAzureRmResourceGroupLocation: '${{ parameters.TemplateVariables.LOCATION }}'
-  #             backendAzureRmStorageAccountName: '$(be_st)'
-  #             backendAzureRmContainerName: '$(be_st_ctr)'
-  #             backendAzureRmKey: '${{ parameters.ProjectNumber }}-terraform.tfstate'
-  #             backendAzureRmStorageAccountSku: 'Standard_LRS'
-  #             allowTelemetryCollection: true
+          - task: TerraformCLI@2
+            displayName: 'Terraform Init'
+            inputs:
+              command: 'init'
+              backendType: 'azurerm'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
+              backendServiceArm: '${{ parameters.ServiceConnection }}'
+              ensureBackend: true
+              backendAzureRmResourceGroupName: '$(be_st_rg)'
+              backendAzureRmResourceGroupLocation: '${{ parameters.TemplateVariables.LOCATION }}'
+              backendAzureRmStorageAccountName: '$(be_st)'
+              backendAzureRmContainerName: '$(be_st_ctr)'
+              backendAzureRmKey: '${{ parameters.ProjectNumber }}-terraform.tfstate'
+              backendAzureRmStorageAccountSku: 'Standard_LRS'
+              allowTelemetryCollection: true
 
-  #         - task: TerraformCLI@2
-  #           displayName: 'Terraform Apply'
-  #           inputs:
-  #             command: 'apply'
-  #             workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
-  #             environmentServiceName: '${{ parameters.ServiceConnection }}'
-  #             allowTelemetryCollection: true
+          - task: TerraformCLI@2
+            displayName: 'Terraform Apply'
+            inputs:
+              command: 'apply'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.TemplateFolder }}'
+              environmentServiceName: '${{ parameters.ServiceConnection }}'
+              allowTelemetryCollection: true
