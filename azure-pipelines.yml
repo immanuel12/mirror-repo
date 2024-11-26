@@ -146,16 +146,16 @@ stages:
               command: 'publish'
               publishWebProjects: true # Change to true if this is a web project
               projects: '**/*.csproj'
-              arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+              arguments: '--configuration $(BuildConfiguration) --output /home/azureuser/myagent/_work/1/s/HelloWorldApp'
               zipAfterPublish: true
           
-          # - task: PublishBuildArtifacts@1
-          #   displayName: 'Publish Artifact'
-          #   inputs:
-          #     PathtoPublish: '$(build.artifactstagingdirectory)'
-          #     ArtifactName: 'drop'
-          #     publishLocation: 'Container'
-          #     StoreAsTar: true
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Artifact'
+            inputs:
+              PathtoPublish: '$(build.artifactstagingdirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+              StoreAsTar: true
 
           - task: AzureRmWebAppDeployment@4
             displayName: 'Deploy to App Service'
