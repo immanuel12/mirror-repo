@@ -71,19 +71,19 @@ stages:
               feedsToUse: 'select'
               vstsFeed: '0e1c30e7-f4f0-4ed1-999a-ad562f081ada'
 
-          - task: DotNetCoreCLI@2
-            displayName: 'Build'
-            inputs:
-              command: 'build' 
-              projects: '**/*.csproj'
-              arguments: '--configuration $(BuildConfiguration)'
+          # - task: DotNetCoreCLI@2
+          #   displayName: 'Build'
+          #   inputs:
+          #     command: 'build' 
+          #     projects: '**/*.csproj'
+          #     arguments: '--configuration $(BuildConfiguration)'
           
-          - task: DotNetCoreCLI@2
-            displayName: 'Build Sln'
-            inputs:
-              command: 'build' 
-              projects: '**/*.sln'
-              arguments: '--configuration release'
+          # - task: DotNetCoreCLI@2
+          #   displayName: 'Build Sln'
+          #   inputs:
+          #     command: 'build' 
+          #     projects: '**/*.sln'
+          #     arguments: '--configuration release'
 
           - task: DotNetCoreCLI@2
             displayName: 'Run Unit Tests'
