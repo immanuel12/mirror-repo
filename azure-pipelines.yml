@@ -53,6 +53,15 @@ stages:
             inputs:
               packageType: 'sdk'
               version: '8.x'  # Sesuaikan dengan versi SDK .NET yang digunakan oleh proyek Anda
+          
+          - task: SonarCloudPrepare@3
+            displayName: 'Sonar Prepare'
+            inputs:
+              SonarCloud: 'sonarcloud'
+              organization: 'immanuel12'
+              scannerMode: 'dotnet'
+              projectKey: 'immanuelsianturi'
+              projectName: 'Project-Poc'
 
           - task: DotNetCoreCLI@2
             displayName: 'Restore'
@@ -76,30 +85,21 @@ stages:
               projects: '**/*.sln'
               arguments: '--configuration release'
 
-          - task: SonarCloudPrepare@3
-            displayName: 'Sonar Prepare'
-            inputs:
-              SonarCloud: 'sonarcloud'
-              organization: 'immanuel12'
-              scannerMode: 'dotnet'
-              projectKey: 'immanuelsianturi'
-              projectName: 'Project-Poc'
-
           - task: DotNetCoreCLI@2
             displayName: 'Run Unit Tests'
             inputs:
               command: 'test'
               projects: '**/*.csproj'
 
-          # - task: SonarCloudAnalyze@3
-          #   displayName: 'Sonar Run Analys'
-          #   inputs:
-          #     jdkversion: 'JAVA_HOME_21_X64'
+          - task: SonarCloudAnalyze@3
+            displayName: 'Sonar Run Analys'
+            inputs:
+              jdkversion: 'JAVA_HOME_21_X64'
 
-          # - task: SonarCloudPublish@3
-          #   displayName: 'Sonar Publish'
-          #   inputs:
-          #     pollingTimeoutSec: '300'
+          - task: SonarCloudPublish@3
+            displayName: 'Sonar Publish'
+            inputs:
+              pollingTimeoutSec: '300'
           
           
   - stage: PipelineCI
