@@ -130,6 +130,7 @@ stages:
               arguments: '--configuration $(BuildConfiguration)'
           
           - script: |
+              cd /home/azureuser/myagent/_work/1/s/HelloWorldApp
               dotnet ef migrations add InitialCreate
               dotnet ef database update
             displayName: 'Run EF Core migrations'
