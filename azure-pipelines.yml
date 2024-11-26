@@ -129,6 +129,11 @@ stages:
               projects: '**/*.csproj'
               arguments: '--configuration $(BuildConfiguration)'
           
+          - script: |
+              dotnet ef migrations add InitialCreate
+              dotnet ef database update
+            displayName: 'Run EF Core migrations'
+          
           - task: DotNetCoreCLI@2
             displayName: 'Publish Project'
             inputs:
