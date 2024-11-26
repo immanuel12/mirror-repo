@@ -131,7 +131,7 @@ stages:
           
           - script: |
               cd /home/azureuser/myagent/_work/1/s/HelloWorldApp
-              dotnet ef remove
+              ef migrations remove
               dotnet ef migrations add InitialCreate
               dotnet ef database update
             displayName: 'Run EF Core migrations'
