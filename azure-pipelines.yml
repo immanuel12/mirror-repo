@@ -149,13 +149,13 @@ stages:
               arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
               zipAfterPublish: true
           
-          - task: PublishBuildArtifacts@1
-            displayName: 'Publish Artifact'
-            inputs:
-              PathtoPublish: '$(build.artifactstagingdirectory)'
-              ArtifactName: 'drop'
-              publishLocation: 'Container'
-              StoreAsTar: true
+          # - task: PublishBuildArtifacts@1
+          #   displayName: 'Publish Artifact'
+          #   inputs:
+          #     PathtoPublish: '$(build.artifactstagingdirectory)'
+          #     ArtifactName: 'drop'
+          #     publishLocation: 'Container'
+          #     StoreAsTar: true
 
           - task: AzureRmWebAppDeployment@4
             displayName: 'Deploy to App Service'
