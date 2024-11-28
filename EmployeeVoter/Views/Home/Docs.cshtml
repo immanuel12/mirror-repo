@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Docs";
+}
+
+<header style="background-color: #333; color: #fff; padding: 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;">
+        <a href="/" style="font-size: 1.5rem; font-weight: bold; color: #fff;">Kotak Suara</a>
+        <nav>
+            <a href="/docs" style="font-size: 1.125rem; margin-left: 1rem; color: #fff; text-decoration: none;">Docs</a>
+            <a href="/swagger" target="_blank" style="font-size: 1.125rem; margin-left: 1rem; color: #fff; text-decoration: none;">Try the APIs</a>
+        </nav>
+    </div>
+</header>
+
+<div style="background-color: #f5f5f5; padding: 4rem 0;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem; text-align: center;">API Endpoints</h1>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background-color: #e5e7eb;">
+                        <th style="padding: 0.5rem; text-align: left;">Name</th>
+                        <th style="padding: 0.5rem; text-align: left;">URL</th>
+                        <th style="padding: 0.5rem; text-align: left;">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">Get All Employees</td>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">/api/Employees</td>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">Retrieves the list of all employees</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">Add Employee</td>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">/api/Employees</td>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">Adds a new employee</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">Get Employee by ID</td>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">/api/Employees/{id}</td>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">Retrieves the details of an employee by their ID</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">Update Employee</td>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">/api/Employees/{id}</td>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">Updates the details of an employee by their ID</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">Delete Employee</td>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">/api/Employees/{id}</td>
+                        <td style="border: 1px solid #d1d5db; padding: 0.5rem;">Deletes an employee by their ID</td>
+                    </tr>
+
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer style="background-color: #333; color: #fff; padding: 1rem; position: fixed; bottom: 0; width: 100%;">
+    <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+        <p>&copy; 2024 - <a href="https://github.com/masnurrm" style="color: #fff; text-decoration: none;">masnurrm</a></p>
+    </div>
+</footer>

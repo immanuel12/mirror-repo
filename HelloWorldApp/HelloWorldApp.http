@@ -1,6 +1,0 @@
-@HelloWorldApp_HostAddress = http://0.0.0.0:5105
-
-GET {{HelloWorldApp_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
